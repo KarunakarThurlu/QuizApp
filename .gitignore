@@ -1,5 +1,6 @@
 .metals
 .vscode
+.env
 node_modules
 
 thunder-tests/thunderActivity.db

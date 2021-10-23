@@ -14,7 +14,7 @@ const UsersApiCalls = {
     },
     getUserById: async (id) => {
         const token = await GetAuthToken();
-        return  axios.get(config.Base_URL + `/user/getuser?id=${id}`, {
+        return  axios.get(`/user/getuser?id=${id}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -25,7 +25,7 @@ const UsersApiCalls = {
     },
     updateUser: async (data) => {
         const token = await GetAuthToken();
-        return  axios.put(config.Base_URL + "/user/updateuser", data, {
+        return  axios.put("/user/updateuser", data, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -33,7 +33,7 @@ const UsersApiCalls = {
     },
     changePassword: async (data) => {
         const token = await GetAuthToken();
-        return  axios.put(config.Base_URL + "/user/changepassword", data, {
+        return  axios.put( "/user/changepassword", data, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -41,7 +41,7 @@ const UsersApiCalls = {
     },
     deleteUser: async (UserId) => {
         const token = await GetAuthToken();
-        return  axios.delete(config.Base_URL + `/user/deleteuser?id=${UserId}`, {
+        return  axios.delete(`/user/deleteuser?id=${UserId}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -52,7 +52,7 @@ const UsersApiCalls = {
         var data = new FormData();
         data.append("image", file);
         console.log(data);
-        return  axios.post(config.Base_URL + `/user/uploadprofilepic`,data, {
+        return  axios.post(`/user/uploadprofilepic`,data, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -60,7 +60,7 @@ const UsersApiCalls = {
     },
     getUsersDataForVisualization: async () => {
         const token = await GetAuthToken();
-        return  axios.get(config.Base_URL + `/user/getusersdataforvisualization`, {
+        return  axios.get(`/user/getusersdataforvisualization`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },

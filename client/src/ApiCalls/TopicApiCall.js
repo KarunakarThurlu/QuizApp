@@ -5,7 +5,7 @@ import axios from "axios"
 const TopicApiCall = {
     getAllTopics: async (pageNumber,pageSize) => {
         const token = await GetAuthToken();
-        return  axios.get(config.Base_URL + `/topic/getalltopics?pageNumber=${pageNumber}&pageSize=${pageSize}`,{
+        return  axios.get(`topic/getalltopics?pageNumber=${pageNumber}&pageSize=${pageSize}`,{
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -13,7 +13,7 @@ const TopicApiCall = {
     },//getalltopicsfordropdown
     getAllTopicsWithoutpagination: async () => {
         const token = await GetAuthToken();
-        return  axios.get(config.Base_URL + `/topic/getalltopicsfordropdown`,{
+        return  axios.get(`topic/getalltopicsfordropdown`,{
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -21,7 +21,7 @@ const TopicApiCall = {
     },
     deleteTopic:  async (data) => {
         const token = await GetAuthToken();
-        return  axios.delete(config.Base_URL + `/topic/deletetopic/?id=${data}`,{
+        return  axios.delete(`topic/deletetopic/?id=${data}`,{
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -29,7 +29,7 @@ const TopicApiCall = {
     },
     addTopic: async (data) => {
         const token = await GetAuthToken();
-        return  axios.post(config.Base_URL + "/topic/savetopic", data,{
+        return  axios.post("topic/savetopic", data,{
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -37,7 +37,7 @@ const TopicApiCall = {
     },
     updateTopic : async (data)=>{
         const token = await GetAuthToken();
-        return  axios.put(config.Base_URL + "/topic/updatetopic", data,{
+        return  axios.put("topic/updatetopic", data,{
             headers: {
                 Authorization: `Bearer ` + token,
             },

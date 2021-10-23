@@ -5,7 +5,7 @@ import GetAuthToken from "../Utils/GetAuthToken";
 const ExamsApi = {
     getAllExamsDetails: async (pageNumber,pageSize) => {
         const token = await GetAuthToken();
-        return  axios.get(config.Base_URL + `/exams/getallexamsDetails?pageNumber=${pageNumber}&pageSize=${pageSize}`, {
+        return  axios.get(`exams/getallexamsDetails?pageNumber=${pageNumber}&pageSize=${pageSize}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -13,7 +13,7 @@ const ExamsApi = {
     },
     deleteExam: async (id) => {
         const token = await GetAuthToken();
-        return axios.delete(config.Base_URL + `/exams/deleteexam?id=${id}`, {
+        return axios.delete(`exams/deleteexam?id=${id}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },

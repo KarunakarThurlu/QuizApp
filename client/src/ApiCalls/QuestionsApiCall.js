@@ -6,7 +6,7 @@ const QuestionsApiCall = {
 
     saveQuestion: async (data) => {
         const token = await GetAuthToken();
-        return  axios.post(config.Base_URL + "/question/savequestion", data, {
+        return  axios.post("/question/savequestion", data, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -22,7 +22,7 @@ const QuestionsApiCall = {
     },
     getSelectRangeQuestionsForExam: async (id,pageNumber,pageSize) => {
         const token = await GetAuthToken();
-        return  axios.get(config.Base_URL + `/question/getquestionsforexam?id=${id}&${pageNumber}&${pageSize}`, {
+        return  axios.get( `/question/getquestionsforexam?id=${id}&${pageNumber}&${pageSize}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -30,7 +30,7 @@ const QuestionsApiCall = {
     },
     getSelectedTopicQuestionsCount: async (id) => {
         const token = await GetAuthToken();
-        return  axios.get(config.Base_URL + `/question/totalquestionscountoftopic?id=${id}`, {
+        return  axios.get(`/question/totalquestionscountoftopic?id=${id}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -38,7 +38,7 @@ const QuestionsApiCall = {
     },
     getAllQuestionsByTopicId: async (id) => {
         const token = await GetAuthToken();
-        return  axios.get(config.Base_URL + `/question/getquestionsbytopicid?id=${id}`, {
+        return  axios.get( `/question/getquestionsbytopicid?id=${id}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -46,7 +46,7 @@ const QuestionsApiCall = {
     },
     getQuestionsForExams: async (topicId,pageNumber,pageSize) => {
         const token = await GetAuthToken();
-        return  axios.get(config.Base_URL + `/question/getquestionsforexam?topicId=${topicId}&pageNumber=${pageNumber}&pageSize=${pageSize}`, {
+        return  axios.get( `/question/getquestionsforexam?topicId=${topicId}&pageNumber=${pageNumber}&pageSize=${pageSize}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -54,7 +54,7 @@ const QuestionsApiCall = {
     },
     getQuestionById: async (id) => {
         const token = await GetAuthToken();
-        return  axios.get(config.Base_URL + `/question/getquestion?id=${id}`, {
+        return  axios.get(`/question/getquestion?id=${id}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -62,7 +62,7 @@ const QuestionsApiCall = {
     },
     updateQuestion: async (data) => {
         const token = await GetAuthToken();
-        return axios.put(config.Base_URL + "/question/updatequestion", data, {
+        return axios.put("/question/updatequestion", data, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -70,7 +70,7 @@ const QuestionsApiCall = {
     },
     getQuestionsCountForDashBoard: async () => {
         const token = await GetAuthToken();
-        return  axios.get(config.Base_URL + "/question/getquestionscountfordashboard", {
+        return  axios.get( "/question/getquestionscountfordashboard", {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -78,7 +78,7 @@ const QuestionsApiCall = {
     },
     deleteQuestion: async (QuestionId) => {
         const token = await GetAuthToken();
-        return axios.delete(config.Base_URL + `/question/deletequestion?id=${QuestionId}`, {
+        return axios.delete(`/question/deletequestion?id=${QuestionId}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -86,7 +86,7 @@ const QuestionsApiCall = {
     },
     getTestResults: async (data,pageNumber,topicId) => {
         const token = await GetAuthToken();
-        return  axios.post(config.Base_URL + `/question/gettestscore?pageNumber=${pageNumber}&id=${topicId}`, data, {
+        return  axios.post(`/question/gettestscore?pageNumber=${pageNumber}&id=${topicId}`, data, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -94,7 +94,7 @@ const QuestionsApiCall = {
     },//userquestionsviewindashboard
     getQuestionsDataForVisualization: async () => {
         const token = await GetAuthToken();
-        return  axios.get(`${config.Base_URL}/question/getquestionsforvisualization`, {
+        return  axios.get(`/question/getquestionsforvisualization`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -102,7 +102,7 @@ const QuestionsApiCall = {
     },
     userQuestionsViewInDashboard: async (pageNumber,pageSize,status) => {
         const token = await GetAuthToken();
-        return  axios.get(`${config.Base_URL}/question/userquestionsviewindashboard?pageNumber=${pageNumber}&pageSize=${pageSize}&status=${status}`, {
+        return  axios.get(`/question/userquestionsviewindashboard?pageNumber=${pageNumber}&pageSize=${pageSize}&status=${status}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -110,7 +110,7 @@ const QuestionsApiCall = {
     },
     getDataForUsersdashboard: async () => {
         const token = await GetAuthToken();
-        return  axios.get(`${config.Base_URL}/question/getdatafordashboard`, {
+        return  axios.get(`/question/getdatafordashboard`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },

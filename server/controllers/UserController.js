@@ -73,7 +73,7 @@ exports.saveUser = async (request, response, next) => {
             for (let role of rolesFromUI) {
                 let roleExisted = await Role.findOne({ role_name: role.role_name });
                 if (roleExisted && roleExisted.role_name === 'SUPER_ADMIN') {
-                    response.json({ data: request.body, statusCode: 401, message: "Access Denied" });
+                    return response.json({ data: request.body, statusCode: 401, message: "Access Denied" });
                 }
                 if (roleExisted === null) {
                     const count = await Role.find().countDocuments();
@@ -95,7 +95,8 @@ exports.saveUser = async (request, response, next) => {
             gender: request.body.gender,
             roles: roles
         });
-        await userObj.save();
+       let savedUser = await userObj.save();
+       savedUser.password=undefined;
         CacheService.del(CommonConstants.KEYS.USERS_VISULN);
         return response.json({ data: userObj, statusCode: 200, message: "User Saved" });
     } catch (error) {
@@ -162,13 +163,10 @@ exports.getAllUsers = async (request, response, next) => {
 exports.updateUser = async (request, response, next) => {
     try {
         const userFromDB = await User.findOne({ _id: request.body._id });
-
         if (userFromDB) {
             //updating user fields
             let keys = Object.keys(request.body);
-            keys.map((v, i) => {
-                userFromDB._doc[keys[i]] = request.body[v];
-            });
+            keys.map((v, i) => { userFromDB._doc[keys[i]] = request.body[v]; });
             userFromDB['updatedOn'] = new Date().toISOString();
             //updating user roles
             let roles = [];
@@ -176,6 +174,9 @@ exports.updateUser = async (request, response, next) => {
                 let rolesFromUI = request.body.roles;
                 for (let role of rolesFromUI) {
                     let roleExisted = await Role.findOne({ role_name: role.role_name });
+                    if (roleExisted && roleExisted.role_name === 'SUPER_ADMIN') {
+                       return response.json({ data: request.body, statusCode: 401, message: "Access Denied" });
+                    }
                     if (roleExisted === null) {
                         let r = new Role({ role_name: role.role_name });
                         roleExisted = await r.save();
@@ -186,7 +187,6 @@ exports.updateUser = async (request, response, next) => {
                 }
             }
             userFromDB.roles = roles;
-
             await User.findOneAndUpdate({ _id: request.body._id }, userFromDB);
             const user = await User.findOne({ _id: request.body._id }).populate('roles');
             user.password = undefined;
@@ -247,7 +247,7 @@ exports.getUsersDataForVisualizationData = async () => {
             }
         });
 
-        return { users: usersStatusCount, usersWithRoles, usersWithRoles: [{ innerSize: '60%', name: "Role", data: usersWithRolesCount }] };
+        return { users: usersStatusCount, usersWithRoles: [{ innerSize: '60%', name: "Role", data: usersWithRolesCount }] };
 
     } catch (error) {
         console.error("########################### " + new Date().toISOString() + " While Getting Users for Visualization   ############################", error);

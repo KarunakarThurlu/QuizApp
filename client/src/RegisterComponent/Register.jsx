@@ -13,6 +13,7 @@ function Register(props) {
     const { register, handleSubmit, formState: { errors }, } = useForm();
     const onSubmit = (data) => {
         data['roles']=[{role_name:"USER"}]
+        data['status']='ACTIVE'
         saveUser(data);
     };
 
