@@ -1,6 +1,5 @@
 import axios from "axios";
 import GetAuthToken from "../Utils/GetAuthToken";
-import config from "./Config";
 
 const QuestionsApiCall = {
 

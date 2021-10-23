@@ -1,7 +1,5 @@
 import axios from "axios";
 import GetAuthToken from "../Utils/GetAuthToken";
-import config from "./Config";
-
 const UsersApiCalls = {
 
     getAllUsers: async (pageNumber,pageSize) => {
@@ -21,7 +19,7 @@ const UsersApiCalls = {
         });
     },
     saveUser: async (data) => {
-        return  axios.post(config.Base_URL + "/user/saveuser", data);
+        return  axios.post(`/user/saveuser`, data);
     },
     updateUser: async (data) => {
         const token = await GetAuthToken();
