@@ -1,0 +1,122 @@
+.dashboard{
+  margin-top: 4em;
+  background-color: rgb(230, 225, 220);
+  .dashboardheader{
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    a{
+      text-decoration: none;
+    }
+    h4 {
+      margin: 10px;
+      color: rgb(236, 151, 22);
+     
+    }
+  }
+  .MuiBox-root{
+    .MuiGrid-root{
+      .MuiPaper-root{
+        margin-top: 10px;
+        padding: 0px;
+        border-radius: 10px;
+      }
+    }
+  }
+}
+
+
+.questionsdashboard {
+  background-color: rgb(230, 225, 220);
+  margin-top: 4em;
+  text-align: center;
+
+  .dashboardheader{
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    a{
+      text-decoration: none;
+    }
+    h4 {
+      margin: 10px;
+      color: rgb(236, 151, 22);
+     
+    }
+  }
+ 
+  .MuiGrid-spacing-xs-5 {
+    .MuiPaper-elevation1 {
+      height: 5em;
+      margin: 1px;
+      align-items: center;
+      background: rgb(230, 225, 220);
+      border-radius: 50px;
+      display: flex;
+      height: 150px;
+      justify-content: center;
+      box-shadow: 10px 10px 15px rgb(197, 189, 183), -10px -10px 15px white;
+    }
+    .chart {
+        height: 20em;
+       
+        div{
+          height: 18em;
+          border-radius: 40px;
+        }
+      
+    }
+  }
+}
+
+.MuiDialog-paper-ChangeQuestionStatusModel {
+  .MuiDialog-container {
+    padding: 10px;
+    .MuiDialog-paperWidthSm {
+      padding: 10px;
+      max-width: 80em;
+      width: 85em;
+      .MuiDialogTitle-root {
+        .MuiTypography-h6 {
+          text-align: right;
+        }
+      }
+      .MuiDialogContent-root{
+        .MuiPaper-root{
+          .MuiTable-root{
+            .MuiTableFooter-root{
+              display: flex;
+                flex-grow: 1;
+              .MuiTableRow-root{
+                .custompagination{
+                  .MuiTypography-root{
+                    float: left;
+                    margin: 0.8em;
+                  }
+                  .MuiInputBase-root{
+                    height: 35px;
+                    margin: 0.4em;
+                  }
+                  .MuiButtonBase-root{
+                    border-radius: 25em;
+                    margin: 0.4em;
+                    color: rgb(29, 3, 3);
+                    background-color: #01010e2a;
+                  }
+                  .MuiPagination-text{
+                    float: right;
+                  }
+                  .Mui-selected{
+                    background-color: #3f51b5;
+                    color: white;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

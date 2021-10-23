@@ -1,0 +1,56 @@
+
+ .Data-Table {
+    .MuiPaper-root{
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      .MuiToolbar-root{
+          min-height: 60px;
+      }
+      .table-header {
+        color: rgb(108, 86, 231);
+      }
+      .MuiTable-root{
+        .MuiTableFooter-root{
+          padding: 10px;
+          .MuiTableRow-root{
+            .custompagination{
+              margin-top: 5px;
+              flex-grow:1;
+              .MuiTypography-root{
+                float: left;
+                margin: 0.8em;
+              }
+              .MuiInputBase-root{
+                float: left;
+                height: 35px;
+                margin: 0.4em;
+                .MuiSelect-root{
+                }
+              }
+              .MuiButtonBase-root{
+                border-radius: 25em;
+                margin: 0.4em;
+                color: rgb(29, 3, 3);
+                background-color: #01010e2a;
+              }
+              .MuiPagination-root{
+                float: right;
+              }
+              .Mui-selected{
+                background-color: #3f51b5;
+                color: white;
+              }
+            }
+          }
+        }
+        .MuiTableBody-root{
+          .MuiTableRow-root{
+            .MuiTableCell-root{
+              padding: 10px;
+            }
+          }
+        } 
+      }
+    }
+  }

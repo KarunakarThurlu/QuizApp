@@ -1,0 +1,30 @@
+//SignupForm Related Styles
+.signup {
+  margin-top: 3em;
+  text-align: center;
+  .MuiFormControl-root{
+    width: 20em;
+  }
+  .MuiButtonBase-root{
+    width: 23em;
+  }
+  .Error-Message {
+    color: red;
+  }
+}
+
+//ForgotPassword Related Styles
+.forgotpassword{
+  text-align: center;
+  align-items: center;
+  padding-top: 15em;
+  .MuiFormControl-root{
+    width: 20em;
+  }
+  .MuiButtonBase-root{
+    width: 23em;
+  }
+}
+
+
+

@@ -1,0 +1,8 @@
+
+exports.KEYS = {
+    // Cache Key Constants
+   USERS_VISULN: 'USERS_VISULN',
+   QUETIONS_VISULN: 'QUETIONS_VISULN',
+   TOPICS_VISULN: 'TOPICS_VISULN',
+    
+};

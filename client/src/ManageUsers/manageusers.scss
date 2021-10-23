@@ -1,0 +1,102 @@
+/* Users Data Table Styles */
+.ManageUsers {
+  margin-top: 4.5em;
+  text-align: center;
+  text-align: center;
+  .DataGrid {
+    height: 30em;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    .table-header {
+      color: rgb(108, 86, 231);
+    }
+  }
+}
+
+/* Add Users Model Styles */
+
+.MuiDialog-paper-AddUserModel {
+  .MuiDialog-container {
+    .MuiPaper-root{
+      padding: 10px;
+      max-width: 80em;
+      width: 70em;
+      
+    }
+    .MuiDialogTitle-root{
+      text-align: center;
+    }
+    .MuiDialogContent-root{
+      .MuiFormControl-root{
+        width: 22em;
+        margin-bottom: 10px;
+        margin-left: 4px;
+      }
+      .secondRow{
+        display: flex;
+        .MuiFormControl-root{
+          margin-bottom: 20px;
+        }
+        .MuiAutocomplete-root{
+          width: 15em;
+          .MuiFormControl-root{
+            margin-top: 0px;
+            width: 44.4em;
+          }
+        }
+      }
+    }
+    .MuiDialogActions-root{
+        padding: 14px 23px 4px 0px;
+    }
+    
+  }
+}
+
+//Profile Picture
+.MuiDialog-paper-ProfilePic{
+  text-align: center;
+  .MuiDialog-container{
+    
+    .MuiPaper-root{
+      margin: 0px;
+      padding: 1px;
+      height: 30em;
+      max-width: 80em;
+      width: 40em;
+    }
+    .MuiDialogTitle-root{
+      text-align: center;
+    }
+    .MuiDialogContent-root{
+      text-align: center;
+      .MuiAvatar-root{
+        width:18em;
+        height: 18em;
+        margin: 0px;
+        margin: auto;
+        img{
+          text-align: center;
+        }
+      }
+      .reactEasyCrop_Container{
+        margin: 8px 8px 70px 8px;
+        border-radius: 10px;
+        align-items: center;
+        align-content: center;
+        text-align: center;
+        .reactEasyCrop_Image{
+          height: 26em;
+        }
+      }
+      
+    }
+
+    .MuiDialogActions-root{
+      justify-content: center;
+    }
+  }
+}
+
+//image-cropper

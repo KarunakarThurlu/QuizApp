@@ -1,0 +1,27 @@
+//Topic Table
+.topic-table{
+  overflow-y: inherit;
+  margin-top: 4.5em;
+  text-align: center;
+  text-align: center;
+}
+
+//Add TopicModel related css
+  .MuiDialog-paper-AddTopicModel{
+    .MuiDialog-paperScrollPaper {
+      flex-direction: column;
+      width: 35em;
+      text-align: center;
+      padding: 15px;
+      .MuiDialogContent-root{
+        .MuiFormControl-root{
+          width: 30em;
+        }
+      }
+      
+    }
+    .MuiDialogActions-root{
+      
+      margin-right: 35px;
+    }
+  }

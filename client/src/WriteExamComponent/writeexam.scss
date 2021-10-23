@@ -1,0 +1,136 @@
+.write-exam-container {
+  margin-top: 6.5em;
+  text-align: center;
+  text-align: center;
+  .writeexam {
+    margin-left: 24px;
+    width: auto;
+    .MuiGrid-item {
+      text-align: left;
+      background: linear-gradient(-34deg, white, rgba(248, 248, 250, 0.22));
+      border-radius: 20px;
+      margin: 10px;
+      padding: 20px;
+      box-shadow: 9px -9px 12px 0 rgba(163, 169, 185, 0.3),
+        -12px 12px 16px rgba(30, 104, 104, 0.25);
+      .Question-name-form-controll {
+        .MuiFormLabel-root {
+          line-height: 1.4;
+        }
+        .MuiFormGroup-root {
+          margin: 30px 0px 20px 0px;
+          padding-left: 5px;
+        }
+      }
+      .next-buttons {
+        text-align: right;
+
+        .MuiButtonBase-root {
+          margin: 3px;
+        }
+      }
+      
+      .questions-list {
+        border-top: 50px;
+        text-align: center;
+        margin: 2px;
+        .MuiGrid-item {
+          height: 2em;
+          justify-content: center;
+          background-color: rgba(240, 84, 12, 0.767);
+           width: 3em;
+           margin: 5px;
+          border-radius: 10px;
+        }
+        .submit-button {
+          //
+          .MuiButtonBase-root {
+            margin-top: 6em;
+            background-color: orangered;
+            color: aliceblue;
+          }
+        }
+      }
+    }
+  }
+ 
+}
+.start-exam{
+  margin: 0px;
+  justify-content: center;
+  .MuiGrid-root{
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+  .start-exam-form-control{
+   text-align: center;
+   .MuiFormControl-root{
+     justify-content: center;
+     text-align: center;
+     .MuiInputBase-formControl{
+       width: 18em;
+     }
+   }
+  }
+ }
+}
+
+
+
+//Exam Results Model
+  .MuiDialog-paper-examresultsModel{
+    .MuiDialog-paperScrollPaper {
+      flex-direction: column;
+      width: 38em;
+      height: 20em;
+      text-align: center;
+      
+    }
+  }
+  //Exam Details Table Styles
+  .Exams-Table{
+    overflow-y: inherit;
+    margin-top: 4.5em;
+    text-align: center;
+    text-align: center;
+  }
+
+  //Review Exam Model
+  .MuiDialog-paper-ReviewExamModel{
+    .MuiDialog-container {
+      .MuiDialog-paperWidthSm {
+        max-width: 100em;
+        width: 100em;
+        .MuiDialogTitle-root {
+         padding: 10px;
+          .MuiTypography-h5 {
+            text-align: center;
+          }
+          .MuiTypography-h6 {
+            text-align: right;
+          }
+        }
+        .MuiDialogContent-root{
+          .MuiTableContainer-root{
+            .MuiTable-root{
+              .MuiTableHead-root{
+                .MuiTableRow-root{
+                  height: 10px;
+                  .MuiTableCell-root{
+                    background-color: blueviolet;
+                    color: white;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .MuiDialogActions-root{
+          .MuiTypography-root{
+            margin-right: 35px;
+          }
+        }
+      }
+    }
+    
+  }

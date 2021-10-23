@@ -1,0 +1,65 @@
+//QuestionDataTable Related Styles
+.questions-container {
+  overflow-y: inherit;
+  margin-top: 4.5em;
+  text-align: center;
+  text-align: center;
+ 
+}
+
+//Add&Edit Question Model Related Styles
+.MuiDialog-paper-AddQuestionModel {
+  .MuiDialog-paperScrollPaper {
+    width: 45em;
+    align-items: center;
+    .MuiFormControl-root{
+      width: 30em;
+      margin: 10px 0px 10px 30px;
+    }
+   
+  }
+}
+
+// ChangeQuestionStatus Model Related Styles
+.MuiDialog-paper-ChangeQuestionStatusModel {
+  .MuiDialog-container {
+    padding: 40px;
+    .MuiDialog-paperWidthSm {
+      padding: 10px;
+      max-width: 80em;
+      width: 70em;
+      .MuiDialogTitle-root {
+        .MuiTypography-h6 {
+          text-align: right;
+        }
+      }
+    }
+  }
+}
+
+
+//Add Question page Styles
+.addquestion{
+ margin-top: 5em;
+ .addQuestionForm{
+   margin: 3em;
+   .questionName{
+    width: 58em;
+   }
+   .topic{
+    width: 19em;
+    margin-left: 10px;
+   }
+   .options{
+    margin: 25px 9px 20px 0px;
+    width: 19em;
+   }
+   .submit{
+     text-align: center;
+   }
+   .MuiFormHelperText-root{
+    color:red;
+    font-size: 15px;
+  }
+ }
+}
