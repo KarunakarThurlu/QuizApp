@@ -7,6 +7,7 @@ const CommonConstants = {
     Delete_Question_Warning : 'Are you sure you want to delete this question?',
     Delete_User_Warning : 'Are you sure you want to delete this user?',
     Delete_Exam_Warning : 'Are you sure you want to delete this exam?',
+    Exam_Exit_warning : 'Are you sure you want to exit? ',
 
     //Chart Title Constants
     PIE_CHART:"PIE_CAHRT",

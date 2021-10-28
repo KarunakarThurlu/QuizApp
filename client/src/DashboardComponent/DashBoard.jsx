@@ -10,6 +10,7 @@ import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 import HighchartsReact from "highcharts-react-official";
 import Typography from '@material-ui/core/Typography';
+import Spinner from '../Utils/Spinner';
 import GridLayout from 'react-grid-layout';
 import CommonConstants from "../Utils/CommonConstants";
 import ChartUtil from "../Utils/ChartUtil";
@@ -30,6 +31,7 @@ const Item = styled(Paper)(({ theme }) => ({
 const DashBoard = (props) => {
 
     const [chartsData,setChartsData]=useState([]);
+    const [spinner,setSpinner]=useState(false);
     const firstChart = useRef(null);
     const secondChart = useRef(null);
     const thirdChart = useRef(null);
@@ -39,13 +41,18 @@ const DashBoard = (props) => {
     },[]);
 
     const getDataForDashBoard = () => {
+        setSpinner(true);
         QuestionsApiCall.getDataForUsersdashboard()
             .then(response => {
+                setSpinner(false);
                 setChartsData(response.data.data);
             })
             .catch(error => {
+                setSpinner(false);
                 console.log("Errror Whle fetching Data for Dashboard",error);
-            })
+            }).finally(()=>{
+                setSpinner(false);
+            });
     }
 
     const layoutLg = [
@@ -96,7 +103,8 @@ const DashBoard = (props) => {
         drilldowndata: chartsData.splinechartData && chartsData.splinechartData.drillDownData,
         title: "Questions count by Topic Name",
         yaxistitle: "Questions Count",
-        xaxistitle: "Questions Count"
+        xaxistitle: "Questions Count",
+        seriesName: "Topic Name",
     }
     const pie = {
         chartType: CommonConstants.PIE_CHART,
@@ -109,9 +117,10 @@ const DashBoard = (props) => {
     return (
         <div className="dashboard">
             <Home />
+            { spinner && <Spinner open={spinner}/>}
             <div className="dashboardheader">
                 <Link to="questionsdashboard"><h4>Questions DashBoard</h4></Link>
-                <Link to="usersdashboard">{localStorage.getItem('isAdmin') === "true" ? <h4>Users Dashboard</h4> : ""}</Link>
+                <Link to="usersdashboard">{localStorage.getItem('role') === "ADMIN" || localStorage.getItem('role') === "SUPER_ADMIN" ? <h4>Users Dashboard</h4> : ""}</Link>
             </div>
             <Box >
                 <Grid container spacing={1}>

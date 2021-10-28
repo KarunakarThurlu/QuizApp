@@ -69,7 +69,7 @@
   }
 }
 
-.MuiDialog-paper-ChangeQuestionStatusModel {
+.userQuestionsView {
   .MuiDialog-container {
     padding: 10px;
     .MuiDialog-paperWidthSm {
@@ -79,6 +79,7 @@
       .MuiDialogTitle-root {
         .MuiTypography-h6 {
           text-align: right;
+          padding: 0px;
         }
       }
       .MuiDialogContent-root{

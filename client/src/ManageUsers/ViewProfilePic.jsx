@@ -7,10 +7,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 
 const ViewProfilePic = (props) => {
-
-    console.log(props.image);
-    console.log(props.open);
-
     return (
         <div className="Image-container">
             <Dialog open={props.open} onClose={props.onClose} className="MuiDialog-paper-ProfilePic">

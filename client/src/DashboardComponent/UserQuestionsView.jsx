@@ -9,7 +9,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import QuestionsApiCall from '../ApiCalls/QuestionsApiCall';
 import DataTable from "../Utils/DataTable";
 import HelperUtils from '../Utils/HelperUtils';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Spinner from '../Utils/Spinner';
 import "./dashboard.scss"
 
 const LightTooltip = withStyles((theme) => ({
@@ -28,7 +28,7 @@ function UserQuestionsView(props) {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [totalCount,setTotalCount]=useState(0);
     const [questions, setQuestions] = useState([]);
-    const [spinner,setSpinner]=useState(false);
+    const [spinner, setSpinner] = useState(false);
 
     useEffect(() => {
         setSpinner(true);
@@ -106,8 +106,8 @@ function UserQuestionsView(props) {
         const TableData = { columns, rows, page, rowsPerPage,title:"Questions Data" ,showGroupByHeader:false, totalCount,showActions:false}
     return (
         <div>
-            {spinner && <CircularProgress  />}
-            <Dialog onClose={props.onClose} open={props.open} className="MuiDialog-paper-ChangeQuestionStatusModel">
+            {spinner && <Spinner open={spinner} />}
+            <Dialog onClose={props.onClose} open={props.open} className="userQuestionsView">
                 <MuiDialogTitle>
                     <IconButton className="closeButton" onClick={props.onClose}><CloseIcon /></IconButton>
                 </MuiDialogTitle>

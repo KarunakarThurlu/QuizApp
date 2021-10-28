@@ -9,11 +9,13 @@ import TextField from '@material-ui/core/TextField';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import UsersApiCalls from '../ApiCalls/UsersApiCall';
 import Notifier from '../Utils/Notifier';
+import Spinner from '../Utils/Spinner';
 import config from "../ApiCalls/Config";
 
 function ChangePassword(props) {
     const [data, setData] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
     const [errors, setErrors] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
+    const [spinner, setSpinner] = useState(false);
     useEffect(() => {
         if (props.open) {
             setData({ currentPassword: '', newPassword: '', confirmPassword: '' });
@@ -25,12 +27,14 @@ function ChangePassword(props) {
         setData({ ...data, [event.target.name]: event.target.value });
         setErrors({ ...errors, [event.target.name]: '' });
     }
-   
+
 
     const handleSubmit = () => {
         if (validateForm()) {
-            data["_id"]=props.userId || "";
+            data["_id"] = props.userId || "";
+            setSpinner(true);
             UsersApiCalls.changePassword(data).then(res => {
+                setSpinner(false);
                 if (res.data.statusCode === 200) {
                     config.LOCAL_FORAGE.removeItem("token");
                     config.LOCAL_FORAGE.removeItem("user");
@@ -39,18 +43,20 @@ function ChangePassword(props) {
                     props.onClose();
                     Notifier.notify(res.data.message, Notifier.notificationType.SUCCESS);
                 } else {
-                    setErrors({ ...errors,currentPassword: res.data.message });
+                    setErrors({ ...errors, currentPassword: res.data.message });
                 }
-            })
-                .then(error => {
-                    console.log(error);
-                })
+            }).then(error => {
+                setSpinner(false);
+                console.log(error);
+            }).finally(() => {
+                setSpinner(false);
+            });
         }
     }
     const validateForm = () => {
         let isValid = true;
         let errorsObj = { currentPassword: '', newPassword: '', confirmPassword: '' };
-        if (data.currentPassword.length <= 0 && !props.role===true) {
+        if (data.currentPassword.length <= 0 && !props.role === true) {
             isValid = false;
             errorsObj.currentPassword = 'Current Password is required';
         }
@@ -72,6 +78,7 @@ function ChangePassword(props) {
 
     return (
         <div>
+            {spinner && <Spinner open={spinner} />}
             <Dialog
                 open={props.open}
                 onClose={props.onClose}
@@ -85,18 +92,18 @@ function ChangePassword(props) {
                     </Typography>
                 </DialogTitle>
                 <DialogContent>
-                    {props.role===true?"":
-                      <TextField
-                        error={errors.currentPassword !== "" ? true : false}
-                        helperText={errors.currentPassword}
-                        id="outlined-basic"
-                        variant="outlined"
-                        label="CurrentPassword"
-                        type="password"
-                        name="currentPassword"
-                        value={data.currentPassword}
-                        onChange={handleChange}
-                    />}<br /><br />
+                    {props.role === true ? "" :
+                        <TextField
+                            error={errors.currentPassword !== "" ? true : false}
+                            helperText={errors.currentPassword}
+                            id="outlined-basic"
+                            variant="outlined"
+                            label="CurrentPassword"
+                            type="password"
+                            name="currentPassword"
+                            value={data.currentPassword}
+                            onChange={handleChange}
+                        />}<br /><br />
                     <TextField
                         error={errors.newPassword !== "" ? true : false}
                         helperText={errors.newPassword}

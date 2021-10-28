@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import UsersVisualization from './UsersVisualization';
 import config from "../ApiCalls/Config";
 import ChangePassword from "../HomeComponent/ChangePassword";
+import Spinner from '../Utils/Spinner';
 
 import "./manageusers.scss";
 import "../Utils/DataTable.scss"
@@ -28,6 +29,8 @@ function ManageUsers(props) {
     const [currentRowData, setCurrentRowData] = useState({});
     const [superAdmin,setSuperAdmin] =useState(false);
     const [showresetpasswordmodel,setShowresetpasswordmodel]=useState(false);
+    const [spinner, setSpinner] = useState(false);
+
 
     const { getAllUsers, users, deleteUser } = useContext(UserContext);
 
@@ -40,8 +43,10 @@ function ManageUsers(props) {
         getAllUsers(newPage, rowsPerPage);
     };
     const getDataOnPageChange = (pageSize) => {
+        setSpinner(true);
         setPage(1);
         getAllUsers(1, pageSize);
+        setSpinner(false);
     }
 
     const getLoggedInUserDataPromise = () => {
@@ -109,10 +114,11 @@ function ManageUsers(props) {
     return (
         <div className="ManageUsers">
             <Home />
+            {spinner && <Spinner open={spinner} />}
             {showVisualization && <UsersVisualization  open={showVisualization} onClose={()=>setShowVisualization(false)}/>}
             {showresetpasswordmodel && <ChangePassword role={superAdmin} userId={currentRowData._id} open={showresetpasswordmodel} onClose={()=>setShowresetpasswordmodel(false)}/>}
             <ViewProfilePic open={openProfilePic} onClose={() => setOpenProfilePic(false)} image={currentRowData.profilePicture} />
-            <AddUserModel open={open} editFormData={formDataToEdit} onClose={() => setOpen(false)} isAdmin={"true"} />
+            <AddUserModel open={open} editFormData={formDataToEdit} onClose={() => setOpen(false)} role={localStorage.getItem("role")} />
             <WarningPopupModel open={showWarningPopup} message={CommonConstants.Delete_User_Warning} onClickYes={handleDeleteUser} handleClose={() => setShowWarningPopup(false)} />
             <div className="Data-Table">
                 <DataTable

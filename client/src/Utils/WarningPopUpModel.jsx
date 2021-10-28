@@ -30,11 +30,11 @@ export default function DeletePopUpModel(props) {
             </Typography>
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={props.onClickYes}  variant="outlined" color="secondary">
+        <DialogActions style={{padding:"20px"}}>
+          <Button onClick={props.onClickYes}  variant="contained"  color="primary">
             YES
           </Button>
-          <Button onClick={props.handleClose}  variant="outlined" color="secondary">
+          <Button onClick={props.handleClose}  variant="contained" color="primary">
             NO
           </Button>
         </DialogActions>

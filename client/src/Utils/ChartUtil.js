@@ -89,7 +89,7 @@ const ChartUtils = (chartdata) => {
                     text: chartdata && chartdata.title
                 },
                 legend: {
-                    enabled: false
+                    enabled: true
                 },
                 colors:['#CC0033','#990033','#660033','#330033','#003366','#006699','#0099CC','#00CCFF','#33CCFF','#66CCFF','#99CCFF','#CCCCFF','#FFCCFF','#FF99FF','#FF66CC','#FF3399','#FF0066','#CC0033','#990033','#660033','#330033','#003366','#006699','#0099CC','#00CCFF','#33CCFF','#66CCFF','#99CCFF','#CCCCFF','#FFCCFF','#FF99FF','#FF66CC','#FF3399','#FF0066','#CC0033','#990033','#660033','#330033','#003366'],
                 accessibility: {
@@ -117,9 +117,8 @@ const ChartUtils = (chartdata) => {
                         }
                     }
                 },
-                series: [
-                    {
-                        name: chartdata.xaxistitle,
+                series: [{
+                        name: chartdata && chartdata.seriesName,
                         colorByPoint: true,
                         data: chartdata && chartdata.seriesData,
                     }
@@ -153,6 +152,9 @@ const ChartUtils = (chartdata) => {
                 },
                 title: {
                     text: chartdata && chartdata.title
+                },
+                legend: {
+                    enabled: chartdata && chartdata.legend 
                 },
                 yAxis: [
                     {

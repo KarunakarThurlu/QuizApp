@@ -73,7 +73,7 @@ function ChangeQuestionStatusModel(props) {
                 />}
                 </MuiDialogContent>
                 <MuiDialogActions>
-                    <Button variant="contained" color="primary" disabled={props.CQData && props.CQData.status === "APPROVED" ? true : false} onClick={() => handleClick("APPROVED")}>Approve</Button><Button disabled={props.CQData && props.CQData.status === "APPROVED" ? true : false} variant="contained" color="secondary" onClick={() => handleClick("REJECTED")}>Reject</Button>
+                    <Button variant="contained"  disabled={props.CQData && props.CQData.status === "APPROVED" ? true : false} onClick={() => handleClick("APPROVED")}>Approve</Button><Button disabled={props.CQData && props.CQData.status === "APPROVED" ? true : false} variant="contained"  onClick={() => handleClick("REJECTED")}>Reject</Button>
                 </MuiDialogActions>
             </Dialog>
         </div>

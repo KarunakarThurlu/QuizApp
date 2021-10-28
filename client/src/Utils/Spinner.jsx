@@ -1,21 +1,16 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    '& > * + *': {
-      marginLeft: theme.spacing(2),
-    },
-  },
-}));
 
- const Spinner =() =>{
-  const classes = useStyles();
+const Spinner = (props) => {
   return (
-    <div className={classes.root}>
-      <CircularProgress />
+    <div className="spinner"  >
+      <Dialog open={props.open}  >
+        <DialogActions >
+          <img src="spinner.gif" alt="Loading..." ></img>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

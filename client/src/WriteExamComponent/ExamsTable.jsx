@@ -11,6 +11,7 @@ import CommonConstants from '../Utils/CommonConstants';
 import Notifier from '../Utils/Notifier';
 import DataTable from '../Utils/DataTable';
 import ViewProfilePic from '../ManageUsers/ViewProfilePic';
+import Spinner from '../Utils/Spinner';
 
 import './writeexam.scss';
 
@@ -27,11 +28,14 @@ const ExamsTable = () => {
     const [examId, setExamId] = useState(0);
     const [openProfilePic, setOpenProfilePic] = useState(false);
     const [currentRowData, setCurrentRowData] = useState({});
+    const [spinner, setSpinner] = useState(false);
 
 
     const handleConformDelete = () => {
+        setSpinner(true);
         ExamsApiCall.deleteExam(examId)
             .then(res => {
+                setSpinner(false);
                 if (res.data.statusCode === 200) {
                     setOpenDeleteModel(false);
                     setExams(exams.filter(exam => exam._id !== examId));
@@ -39,8 +43,11 @@ const ExamsTable = () => {
                 }
             })
             .catch(err => {
+                setSpinner(false);
                 console.log(err);
-            })
+            }).finally(() => {
+                setSpinner(false);
+            });
     }
 
     useEffect(() => {
@@ -48,16 +55,21 @@ const ExamsTable = () => {
     }, [page, rowsPerPage]);
 
     const getExamsPerPage = (pageNumber, pageSize) => {
+        setSpinner(true);
         ExamsApiCall.getAllExamsDetails(pageNumber, pageSize)
             .then(res => {
+                setSpinner(false);
                 if (res.data.statusCode === 200) {
                     setExams(res.data.data.data);
                     setTotalCount(parseInt(res.data.data.totalCount));
                 }
             })
             .catch(err => {
+                setSpinner(false);
                 console.log(err);
-            })
+            }).finally(() => {
+                setSpinner(false);
+            });
     }
 
     const handleExamReviewClick = (row) => {
@@ -108,6 +120,7 @@ const ExamsTable = () => {
     return (
         <div className="Exams-Table">
             <Home />
+            {spinner && <Spinner open={spinner} />}
             <ViewProfilePic open={openProfilePic} onClose={() => setOpenProfilePic(false)} image={currentRowData.profilePicture} />
             <ReviewExam open={showReviewExam} onClose={() => setShowReviewExam(false)} data={testQuestions} score={testScore} />
             <DeletePopUpModel open={openDeleteModel} onClickYes={handleConformDelete} message={CommonConstants.Delete_Exam_Warning} handleClose={() => setOpenDeleteModel(false)} />

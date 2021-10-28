@@ -3,7 +3,7 @@ import Home from '../HomeComponent/Home'
 import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded';
 import SkipPreviousRoundedIcon from '@material-ui/icons/SkipPreviousRounded';
 import Grid from '@material-ui/core/Grid';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Spinner from "../Utils/Spinner";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -15,7 +15,7 @@ import Button from '@material-ui/core/Button';
 import WarningPopUpModel from "../Utils/WarningPopUpModel"
 import TopicApiCall from "../ApiCalls/TopicApiCall";
 import QuestionsApiCall from '../ApiCalls/QuestionsApiCall';
-
+import {Prompt} from 'react-router-dom';
 import "./writeexam.scss";
 import { Typography } from '@material-ui/core';
 import CommonConstants from '../Utils/CommonConstants';
@@ -32,6 +32,7 @@ function WriteExam(props) {
     let [seconds, setSeconds] = useState(0);
     let [minutes, setMinutes] = useState(20);
     const [openSubmitWarningModel, setOpenSubmitWarningModel] = useState(false);
+    const [warningMessage, setWarningMessage] = useState(CommonConstants.Submit_Exam_Warning);
     const [openExamResultsModel, setOpenExamResultsModel] = useState(false);
     const [testScore, setTestScore] = useState(0);
     const [rangedata, setRangeData] = useState([]);
@@ -144,6 +145,7 @@ function WriteExam(props) {
 
     const showWarning = (e) => {
         e.preventDefault();
+        setWarningMessage(CommonConstants.Submit_Exam_Warning);
         setOpenSubmitWarningModel(true)
     }
 
@@ -157,7 +159,8 @@ function WriteExam(props) {
                     setTestScore(response.data.testScore);
                     setOpenExamResultsModel(true);
                     setStartExam(false);
-                    setTopicName('')
+                    setTopicName('');
+                    setQuestions([]);
                     setOpenSubmitWarningModel(false)
                 }
             })
@@ -186,12 +189,21 @@ function WriteExam(props) {
         setRangeData(array);
         return array;
     }
+
+    const warnOnLeavingExampage=()=>{
+        if(questions.length>0){
+            setOpenSubmitWarningModel(true);
+            setWarningMessage(CommonConstants.Exam_Exit_warning);
+            return false;
+        }
+    }
     return (
         <div className="write-exam-container">
             <Home />
-            <WarningPopUpModel open={openSubmitWarningModel} message={CommonConstants.Submit_Exam_Warning} onClickYes={handleSubmit} handleClose={() => setOpenSubmitWarningModel(false)} />
+            <Prompt when={true} message={warnOnLeavingExampage}  />
+            <WarningPopUpModel open={openSubmitWarningModel} message={warningMessage} onClickYes={handleSubmit} handleClose={() => setOpenSubmitWarningModel(false)} />
             <ExamResults open={openExamResultsModel} handleClose={() => setOpenExamResultsModel(false)} testScore={testScore} />
-            {loader && <CircularProgress className="loader" />}
+            {loader && <Spinner open={loader} />}
             {startExam === true ? <Grid container className="writeexam" spacing={0}>
                 <Grid item xs={8} >
                     <FormControl className="Question-name-form-controll">

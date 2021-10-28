@@ -1,8 +1,8 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useState } from 'react'
 import QuestionsContext from "./QuestionsContext";
 import QuestionReducer from './QuestionsReducer';
 import QuestionApiCall from "../../ApiCalls/QuestionsApiCall";
-
+import Spinner from "../../Utils/Spinner";
 import QuestionActions from "./QuestionActions";
 import Notifier from '../../Utils/Notifier';
 
@@ -13,10 +13,13 @@ const QuestionsState = (props) => {
         totalCount: 0
     }
     const [state, dispatch] = useReducer(QuestionReducer, initialState);
+    const [spinner, setSpinner] = useState(false);
 
     const saveQuestion = async (data) => {
+        setSpinner(true);
         await QuestionApiCall.saveQuestion(data)
             .then(response => {
+                setSpinner(false);
                 if (response.data.statusCode === 200) {
                     Notifier.notify("Question Saved Successfully", Notifier.notificationType.SUCCESS);
                     dispatch({
@@ -24,18 +27,23 @@ const QuestionsState = (props) => {
                         payload: response.data.data
                     });
                     return response.data.statusCode;
-                }else{
-                    Notifier.notify( response.data.message, Notifier.notificationType.ERROR);
+                } else {
+                    Notifier.notify(response.data.message, Notifier.notificationType.ERROR);
                 }
             }).catch(error => {
-                console.log(" While Saving Question ===> ",error);
-            })
+                setSpinner(false);
+                console.log(" While Saving Question ===> ", error);
+            }).finally(() => {
+                setSpinner(false);
+            });
 
     }
 
     const getQuestion = async (id) => {
+        setSpinner(true);
         await QuestionApiCall.getQuestionById(id)
             .then(response => {
+                setSpinner(false);
                 if (response.data.statusCode === 200) {
                     Notifier.notify("Question Deleted Successfully", Notifier.notificationType.SUCCESS);
                     dispatch({
@@ -47,12 +55,17 @@ const QuestionsState = (props) => {
                 }
             })
             .catch(error => {
+                setSpinner(false);
                 console.log("While Getting Question ===> ", error);
+            }).finally(() => {
+                setSpinner(false);
             });
     }
     const deleteQuestion = async (id) => {
+        setSpinner(true);
         await QuestionApiCall.deleteQuestion(id)
             .then(response => {
+                setSpinner(false);
                 if (response.data.statusCode === 200) {
                     Notifier.notify(response.data.message, Notifier.notificationType.SUCCESS);
                     getAllQuestions();
@@ -61,26 +74,36 @@ const QuestionsState = (props) => {
                 }
             })
             .catch(error => {
+                setSpinner(false);
                 console.log("While Deleting Question ===> ", error);
+            }).finally(() => {
+                setSpinner(false)
             });
     }
 
-    const getAllQuestions = async (pageNumber,pageSize) => {
-        await QuestionApiCall.getAllQuestions(pageNumber,pageSize)
+    const getAllQuestions = async (pageNumber, pageSize) => {
+        setSpinner(true);
+        await QuestionApiCall.getAllQuestions(pageNumber, pageSize)
             .then(response => {
+                setSpinner(false);
                 dispatch({
                     type: QuestionActions.GET_ALL_QUESTIONS,
                     payload: response.data
                 })
             })
             .catch(error => {
+                setSpinner(false);
                 console.log("While Getting All Questions ===> ", error);
-            })
+            }).finally(() => {
+                setSpinner(false);
+            });
     }
 
     const updateQuestion = async (data) => {
+        setSpinner(true);
         await QuestionApiCall.updateQuestion(data)
             .then(response => {
+                setSpinner(false);
                 if (response.data.statusCode === 200) {
                     Notifier.notify(response.data.message, Notifier.notificationType.SUCCESS);
                     dispatch({
@@ -92,21 +115,27 @@ const QuestionsState = (props) => {
                 }
             })
             .catch(error => {
+                setSpinner(false);
                 console.log("While Updating Question ===> ", error);
+            }).finally(() => {
+                setSpinner(false);
             });
     }
 
     return (
-        <QuestionsContext.Provider value={{
-            questions: state,
-            saveQuestion,
-            getQuestion,
-            deleteQuestion,
-            getAllQuestions,
-            updateQuestion
-        }}>
-            { props.children}
-        </QuestionsContext.Provider >
+        <>
+            {spinner && <Spinner open={spinner} />}
+            <QuestionsContext.Provider value={{
+                questions: state,
+                saveQuestion,
+                getQuestion,
+                deleteQuestion,
+                getAllQuestions,
+                updateQuestion
+            }}>
+                {props.children}
+            </QuestionsContext.Provider >
+        </>
     )
 }
 

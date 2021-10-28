@@ -10,6 +10,9 @@ import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
 import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
 import BarChartRoundedIcon from '@material-ui/icons/BarChartRounded';
 import UserQuestionsView from "./UserQuestionsView"
+import ChartUtil from '../Utils/ChartUtil';
+import CommonConstants from '../Utils/CommonConstants';
+import Spinner from '../Utils/Spinner';
 
 import "./dashboard.scss"
 
@@ -21,13 +24,16 @@ function DashBoard() {
   const [questions, setQuestions] = useState({});
   const [xaxisData, setXaxisData] = useState([]);
   const [chartData, setChartData] = useState([]);
+  const [spinner, setSpinner] = useState(false);
 
   useEffect(() => {
     fetchDataForDashBoard();
   }, []);
   const fetchDataForDashBoard = () => {
+    setSpinner(true);
     QuestionsApiCall.getQuestionsCountForDashBoard()
       .then((response) => {
+        setSpinner(false);
         if (response.data.statusCode === 200) {
           setQuestions(response.data.data);
           let xaxis = [];
@@ -48,54 +54,30 @@ function DashBoard() {
         }
       })
       .catch(error => {
+        setSpinner(false);
         console.log(error);
+      }).finally(() => {
+        setSpinner(false);
       });
   }
-  const bar = {
 
-    title: {
-      text: 'QuestionsCount By TopicName',
-    },
-    chart: {
-      type: 'spline'
-    },
-    legend: {
-      enabled: false
-    },
-    yAxis: [
-      {
-        gridLineWidth: 0,
-        yAxis: 1,
-        title: {
-          color: ["#112233"],
-          text: 'Questions Count',
-        },
-      }
-    ],
-    xAxis: {
-      categories: xaxisData,
-      title: {
-        text: 'TopicName',
-      },
-    },
-    style: {
-      width: "100px",
-    },
-    colors: ["#001177"],
-    series: [
-      {
-        name: "QuestionsCount",
-        data: chartData,
-      },
-    ],
-  };
+  const splineData = {
+    chartType: CommonConstants.SPLINE,
+    seriesData: chartData,
+    xaxis: xaxisData,
+    title: "QuestionsCount by TopicName",
+    yaxistitle: "Questions Count",
+    xaxistitle: "Topic Name",
+    legend: false,
+  }
 
   return (
     <div className="questionsdashboard">
       <Home />
+      {spinner && <Spinner open={spinner} />}
       {open && <UserQuestionsView open={open} onClose={() => setOpen(false)} status={status} />}
       <div className="dashboardheader">
-        <Link to="questionsdashboard"><h4>Questions DashBoard</h4></Link> <Link to="usersdashboard">{localStorage.getItem('isAdmin') === "true" ? <h4>Users Dashboard</h4> : ""}</Link>
+        <Link to="questionsdashboard"><h4>Questions DashBoard</h4></Link> <Link to="usersdashboard">{localStorage.getItem('role') === "ADMIN" || localStorage.getItem('role')  === "SUPER_ADMIN" ? <h4>Users Dashboard</h4> : ""}</Link>
       </div>
       <Grid container spacing={5}>
         <Grid item xs={6} sm={3} >
@@ -113,7 +95,7 @@ function DashBoard() {
         <Grid item xs={12} className="chart" >
           <HighchartsReact
             highcharts={Highcharts}
-            options={bar}
+            options={ChartUtil(splineData)}
           />
         </Grid>
       </Grid>

@@ -1,4 +1,3 @@
-import config from "./Config";
 import axios from "axios";
 import GetAuthToken from "../Utils/GetAuthToken";
 

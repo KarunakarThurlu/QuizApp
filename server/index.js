@@ -35,7 +35,7 @@ const server = app.listen(PORT, () => {
 });
 
 
-mongoose.connect(process.env.MONGODB_URL , { useCreateIndex: true, useFindAndModify: false , useNewUrlParser: true, useUnifiedTopology: true }).then((req, res) => {
+mongoose.connect(process.env.MONGODB_URL, { useCreateIndex: true, useFindAndModify: false, useNewUrlParser: true, useUnifiedTopology: true }).then((req, res) => {
     console.log("Mongo DB Connected");
 }).catch(error => {
     console.log(error);
@@ -55,10 +55,13 @@ app.use("/exams", examsRouter);
 app.use('/uploads', express.static('uploads'));
 
 //Render React App from ../client/build
-app.use(express.static(path.join(__dirname, '../client/build')));
-app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-});
+if (process.env.NODE_ENV === 'production') {
+
+    app.use(express.static(path.join(__dirname, '../client/build')));
+    app.get('/*', (req, res) => {
+        res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+    });
+}
 //Error Handling
 app.use((request, response) => {
     response.json({ statusCode: 404, message: "Not Found" })

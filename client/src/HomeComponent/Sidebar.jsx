@@ -21,7 +21,7 @@ function Sidebar(props) {
             <Drawer variant="persistent"
                 anchor="left" openSecondary={true} open={props.open} >
                 <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", height: "4.0em", backgroundColor: "hsl(231deg 48% 48%)" }}>
-                    <img src="/java-horizontal.svg" alt="" style={{ height: "45px" }} />
+                    <img src="/icons8-java8.svg" alt="" style={{ height: "60px", width: "60px", marginRight: "20px" }} />
                     <IconButton onClick={props.onHide} >
                         <CloseIcon style={{ color: "InactiveBorder", fontSize: "2.0rem" }} />
                     </IconButton>
@@ -59,16 +59,17 @@ function Sidebar(props) {
                         </Typography>
                     </Link>
                 </MenuItem>
-                {props.isAdmin === "true" ?
+                {props.role === "ADMIN" || props.role === "SUPER_ADMIN" ?
+                    <MenuItem onClick={props.onHide} >
+                        <MenuBookIcon />
+                        <Link to="/submitquestion" className="MuiMenuItem-root-sidebar">
+                            <Typography variant="h6">
+                                Questions
+                            </Typography>
+                        </Link>
+                    </MenuItem> : ""}
+                {props.role === "SUPER_ADMIN" ?
                     <>
-                        <MenuItem onClick={props.onHide} >
-                            <MenuBookIcon />
-                            <Link to="/submitquestion" className="MuiMenuItem-root-sidebar">
-                                <Typography variant="h6">
-                                    Questions
-                                </Typography>
-                            </Link>
-                        </MenuItem>
                         <MenuItem onClick={props.onHide}>
                             <GroupIcon />
                             <Link to="/manageusers" className="MuiMenuItem-root-sidebar">
@@ -85,7 +86,9 @@ function Sidebar(props) {
                                 </Typography>
                             </Link>
                         </MenuItem>
-                    </> : ""}
+                    </>
+                    : ""}
+
             </Drawer>
         </div>
     )

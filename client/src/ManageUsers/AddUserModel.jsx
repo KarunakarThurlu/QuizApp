@@ -233,6 +233,7 @@ function AddUserModel(props) {
                         variant="outlined"
                         type="email"
                         name="email"
+                        disabled={props.editFormData && props.editFormData._id!==""?true:false}
                         onChange={handleChange}
                         error={errors.email !== "" ? true : false}
                         helperText={errors.email}
@@ -284,12 +285,12 @@ function AddUserModel(props) {
                             }}
                             value={data.roles}
                             filterSelectedOptions
-                            disabled={props.isAdmin!==undefined && props.isAdmin ==="true"?false:true}
+                            disabled={props.role ==="SUPER_ADMIN"?false:true}
                             renderInput={params => (
                                 <TextField
                                     {...params}
                                     variant="outlined"
-                                    label="SelectRoles"
+                                    label="Roles"
                                     placeholder="Roles"
                                     margin="normal"
                                     error={errors.roles !== "" ? true : false}

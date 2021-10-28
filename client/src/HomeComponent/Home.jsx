@@ -16,8 +16,6 @@ import Sidebar from './Sidebar';
 import ChangePassword from './ChangePassword';
 import AddUserModel from '../ManageUsers/AddUserModel';
 
-
-
 import './sidebar.scss';
 
 
@@ -25,7 +23,7 @@ function NavBar(props) {
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [role, setRole] = useState("USER");
     const [showProfilePic, setShowProfilePic] = useState(false);
     const [showChangePassword, setShowChangePassword] = useState(false);
     const [showAccountDetails, setShowAccountDetails] = useState(false);
@@ -61,14 +59,14 @@ function NavBar(props) {
 
     const handleMenuClick = () => {
         setSidebarOpen(true)
-        setIsAdmin(localStorage.getItem("isAdmin"));
+        setRole(localStorage.getItem("role"));
     }
 
     const dropDropDownItemClick = (event) => {
         if (event.currentTarget.innerText === "Profile") {
             setShowProfilePic(true);
         } else if (event.currentTarget.innerText === "Account") {
-            setIsAdmin(localStorage.getItem("isAdmin") === null ? false : localStorage.getItem("isAdmin"));
+            setRole(localStorage.getItem("role") === null ? "USER" : localStorage.getItem("role"));
             setShowAccountDetails(true);
             getLoggedInUserDataPromise();
         } else if (event.currentTarget.innerText === "Password") {
@@ -83,7 +81,7 @@ function NavBar(props) {
     }
     return (
         <div className="home-container">
-            <AddUserModel open={showAccountDetails} onClose={() => setShowAccountDetails(false)} isAdmin={isAdmin} editFormData={loggedInUserData} />
+            <AddUserModel open={showAccountDetails} onClose={() => setShowAccountDetails(false)} role={role} editFormData={loggedInUserData} />
             <UploadProfilePic open={showProfilePic} onClose={() => {setShowProfilePic(false);getLoggedInUserDataPromise()}} image={loggedInUserData !== null ? loggedInUserData.profilePicture : ""}  />
             <ChangePassword open={showChangePassword} onClose={() => setShowChangePassword(false)} />
             <Menu
@@ -139,7 +137,7 @@ function NavBar(props) {
                       : <AccountCircleSharpIcon  onClick={handleClick} />}
                 </Toolbar>
             </AppBar>
-            <Sidebar open={sidebarOpen} isAdmin={isAdmin} onHide={() => setSidebarOpen(false)} />
+            <Sidebar open={sidebarOpen} role={role} onHide={() => setSidebarOpen(false)} />
 
         </div>
     )
