@@ -32,7 +32,8 @@ const QuestionsVisualization = (props) => {
         drilldowndata: data && data.drillDownData,
         title: "Questions count by Topic Name",
         yaxistitle: "Questions Count",
-        xaxistitle: "Topic Name"
+        xaxistitle: "Topic Name",
+        seriesName: "Topic Name",
     }
 
     return (

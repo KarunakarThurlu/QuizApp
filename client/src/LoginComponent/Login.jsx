@@ -55,7 +55,6 @@ function Login(props) {
                 <div className="form-fields">
                     <TextField
                         className="MuiTextField-root-login"
-                        id="outlined-basic"
                         label="User Name"
                         variant="outlined"
                         type="email"
@@ -73,7 +72,6 @@ function Login(props) {
                     <br />
                     <TextField
                         className="MuiTextField-root-login"
-                        id="outlined-basic"
                         variant="outlined"
                         label="Password"
                         type="password"

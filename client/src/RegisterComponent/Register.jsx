@@ -10,11 +10,13 @@ import UserContext from "../Context/UserContext/UserContext";
 function Register(props) {
 
     const { saveUser } = useContext(UserContext);
-    const { register, handleSubmit, formState: { errors }, } = useForm();
+    const { register, handleSubmit, formState: { errors },reset } = useForm();
     const onSubmit = (data) => {
         data['roles']=[{role_name:"USER"}]
         data['status']='ACTIVE'
         saveUser(data);
+        props.history.push("/signin");
+        reset();
     };
 
     return (
@@ -47,7 +49,7 @@ function Register(props) {
                     <TextField
                         id="outlined-basic"
                         variant="outlined"
-                        label="Phono"
+                        label="Phone"
                         type="text"
                         name="phoneNumber"
                         {...register("phoneNumber",{ 

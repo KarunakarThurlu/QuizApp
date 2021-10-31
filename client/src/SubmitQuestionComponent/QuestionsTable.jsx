@@ -81,26 +81,35 @@ function SubmitQuestion(props) {
             { field: 'topic_name', title: 'Topic', },
             {
                 field: "optionA", title: "optionA",
-                cellStyle: {
-                    whiteSpace: 'nowrap'
-                },
+                render: (params) => (
+                    <LightTooltip key={params.name._id} title={params.optionA} arrow >
+                        <span className="table-cell-trucate">{params.optionA.substr(0, 17)}{params.optionA.length>16?"...":""}</span>
+                    </LightTooltip>
+                ),
             },
             {
                 field: "optionB", title: "optionB",
-                cellStyle: {
-                    whiteSpace: 'nowrap'
-                },
+                render: (params) => (
+                    <LightTooltip key={params.name._id} title={params.optionB} arrow >
+                        <span className="table-cell-trucate">{params.optionB.substr(0, 17)}{params.optionB.length>16?"...":""}</span>
+                    </LightTooltip>
+                ),
             },
             {
-                field: "optionC", title: "optionC", cellStyle: {
-                    whiteSpace: 'nowrap'
-                },
+                field: "optionC", title: "optionC", 
+                render: (params) => (
+                    <LightTooltip key={params.name._id} title={params.optionC} arrow >
+                        <span className="table-cell-trucate">{params.optionC.substr(0, 17)}{params.optionC.length>16?"...":""}</span>
+                    </LightTooltip>
+                ),
             },
             {
                 field: "optionD", title: "optionD",
-                cellStyle: {
-                    whiteSpace: 'nowrap'
-                },
+                render: (params) => (
+                    <LightTooltip key={params.name._id} title={params.optionD} arrow >
+                        <span className="table-cell-trucate">{params.optionD.substr(0, 17)}{params.optionD.length>16?"...":""}</span>
+                    </LightTooltip>
+                ),
             },
             {
                 field: 'status', title: 'Status', align: 'center',
@@ -117,7 +126,7 @@ function SubmitQuestion(props) {
     const totalCount = questions.totalCount;
     if (rows !== undefined && rows.length !== 0) {
         rows.forEach((q, i) => {
-            q.creator_name = q.creator.name;
+            q.creator_name = q.creator.email;
             q.topic_name = q.topic.topicName;
             q.createdOn = HelperUtils.formateDate(q.createdOn);
             q.updatedOn = HelperUtils.formateDate(q.updatedOn);

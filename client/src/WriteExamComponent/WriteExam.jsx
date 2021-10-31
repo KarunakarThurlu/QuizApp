@@ -20,6 +20,7 @@ import "./writeexam.scss";
 import { Typography } from '@material-ui/core';
 import CommonConstants from '../Utils/CommonConstants';
 import ExamResults from './ExamResults';
+import MenuItem from '@mui/material/MenuItem';
 
 function WriteExam(props) {
     const [value, setValue] = useState('');
@@ -53,6 +54,8 @@ function WriteExam(props) {
                 if (response.data.statusCode === 200) {
                     getRangeList(response.data.data);
                     setLoader(false);
+                }else{
+                    setRangeData([]);
                 }
             })
             .catch(error => console.log(error))
@@ -60,9 +63,10 @@ function WriteExam(props) {
     }
 
     const handleTopicSelect = (event) => {
-        getSelectedTopicQuestionsCount(event.target.value);
-        setTopicName(event.target.value);
-        if (event.target.value !== '') {
+        const topicId= event.target.name!==undefined?event.target.value:event.target.getAttribute("data-value")
+        getSelectedTopicQuestionsCount(topicId);
+        setTopicName(topicId);
+        if (topicId !== '') {
             setErrors({ ...errors, topic: '' });
         }
     }
@@ -92,7 +96,7 @@ function WriteExam(props) {
             setStartExam(true);
             const down = () => {
                 if (seconds === 0) {
-                    seconds = 60;
+                    seconds = 59;
                     setSeconds(seconds);
                     minutes = minutes - 1
                     setMinutes(minutes)
@@ -153,8 +157,10 @@ function WriteExam(props) {
         e.preventDefault();
         const range = selectedRange.split('-');
         const pageNumber = parseInt(range[0]);
+        setLoader(true);
         QuestionsApiCall.getTestResults(questions, pageNumber-1, topicName)
             .then(response => {
+                setLoader(false);
                 if (response.data.statusCode === 200) {
                     setTestScore(response.data.testScore);
                     setOpenExamResultsModel(true);
@@ -166,7 +172,9 @@ function WriteExam(props) {
             })
             .catch(error => {
                 console.log(error);
+                setLoader(false);
             })
+            .final(() => setLoader(false));
     }
     const getRangeList = (size) => {
         let array = [];
@@ -247,22 +255,22 @@ function WriteExam(props) {
                         <FormControl variant="outlined" >
                             <InputLabel >Topic</InputLabel>
                             <Select
-                                native
+                                //native
                                 label="Topic"
                                 name="Topic"
                                 onClick={handleTopicSelect}
-                                error={errors.topic !== "" ? true : false}
+                                error={errors.topic !== ""}
                                 helperText={errors.topic}
                             >
-                                <option aria-label="None" value="" />
-                                {topics.map(t => (<option value={t._id}>{t.topicName}</option>))}
+                                <MenuItem aria-label="None" value="" />
+                                {topics.map(t => (<MenuItem value={t._id}>{t.topicName}</MenuItem>))}
                             </Select>
                         </FormControl>
                         <br /><br />
                         <FormControl variant="outlined" className="start-exam-form-control">
                             <InputLabel >Questions Range</InputLabel>
                             <Select
-                                native
+                               // native
                                 label="Questions Range"
                                 name="questionsrange"
                                 onClick={(e) => {
@@ -271,11 +279,11 @@ function WriteExam(props) {
                                         setErrors({ ...errors, questionsrange: '' });
                                     }
                                 }}
-                                error={errors.questionsrange !== "" ? true : false}
+                                error={errors.questionsrange !== ""}
                                 helperText={errors.questionsrange}
                             >
-                                <option aria-label="None" value="" />
-                                {rangedata.map((v, i) => (<option key={i} value={v}>{v}</option>))}
+                                <MenuItem aria-label="None" value="" />
+                                {rangedata.map((v, i) => (<MenuItem key={i} value={v}>{v}</MenuItem>))}
                             </Select>
                         </FormControl>
                         

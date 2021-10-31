@@ -63,23 +63,43 @@ function UserQuestionsView(props) {
                 cellStyle: {
                     whiteSpace: 'nowrap'
                 },
+                render: (params) => (
+                    <LightTooltip key={params.optionA._id} title={params.optionA} arrow >
+                        <span className="table-cell-trucate">{params.optionA.substr(0, 17)}{params.optionA.length>16?"...":""}</span>
+                    </LightTooltip>
+                ),
             },
             {
                 field: "optionB", title: "optionB",
                 cellStyle: {
                     whiteSpace: 'nowrap'
                 },
+                render: (params) => (
+                    <LightTooltip key={params.optionB._id} title={params.optionB} arrow >
+                        <span className="table-cell-trucate">{params.optionB.substr(0, 17)}{params.optionB.length>16?"...":""}</span>
+                    </LightTooltip>
+                ),
             },
             {
                 field: "optionC", title: "optionC", cellStyle: {
                     whiteSpace: 'nowrap'
                 },
+                render: (params) => (
+                    <LightTooltip key={params.optionC._id} title={params.optionC} arrow >
+                        <span className="table-cell-trucate">{params.optionC.substr(0, 17)}{params.optionC.length>16?"...":""}</span>
+                    </LightTooltip>
+                ),
             },
             {
                 field: "optionD", title: "optionD",
                 cellStyle: {
                     whiteSpace: 'nowrap'
                 },
+                render: (params) => (
+                    <LightTooltip key={params.optionD._id} title={params.optionD} arrow >
+                        <span className="table-cell-trucate">{params.optionD.substr(0, 17)}{params.optionD.length>16?"...":""}</span>
+                    </LightTooltip>
+                ),
             },
             { field: 'createdOn', title: 'Created Date', },
         ];
