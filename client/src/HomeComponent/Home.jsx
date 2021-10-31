@@ -61,7 +61,7 @@ function NavBar(props) {
         setSidebarOpen(true)
         setRole(localStorage.getItem("role"));
     }
-
+     
     const dropDropDownItemClick = (event) => {
         if (event.currentTarget.innerText === "Profile") {
             setShowProfilePic(true);
@@ -91,14 +91,14 @@ function NavBar(props) {
                 open={anchorEl}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleClose}>
+                {/* <MenuItem onClick={handleClose}>
                     <div onClick={dropDropDownItemClick} name="Profile" style={{ display: "flex" }}>
                         <PersonIcon />
                         <Typography >
                             Profile
                         </Typography>
                     </div>
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem onClick={handleClose}>
                     <div onClick={dropDropDownItemClick} name="Account" style={{ display: "flex" }}>
                         <SettingsIcon style={{ paddingRight: "4px" }} />

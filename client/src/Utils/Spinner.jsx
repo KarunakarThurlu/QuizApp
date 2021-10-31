@@ -8,7 +8,7 @@ const Spinner = (props) => {
     <div className="spinner"  >
       <Dialog open={props.open}  >
         <DialogActions >
-          <img src="spinner.gif" alt="Loading..." ></img>
+          <img src="spinner.gif" alt="spinner.gif" ></img>
         </DialogActions>
       </Dialog>
     </div>

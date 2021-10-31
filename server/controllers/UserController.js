@@ -91,6 +91,7 @@ exports.saveUser = async (request, response, next) => {
             lastName: request.body.lastName,
             email: request.body.email,
             phoneNumber: request.body.phoneNumber,
+            status: request.body.status,
             password: bcrypt.hashSync(request.body.password || "user", 10),
             gender: request.body.gender,
             roles: roles
