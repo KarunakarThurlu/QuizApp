@@ -1,0 +1,28 @@
+
+.login{
+    text-align: center;
+    padding-top: 10em;
+    .MuiSvgIcon-root{
+        color:rgb(3, 3, 134);
+    }
+    .form-fields{
+        .MuiFormControl-root{
+            width: 20em; 
+        }
+    }
+    .form-button{
+        .MuiButtonBase-root{
+            width: 23em;
+        }
+    }
+    .questions{
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        display: flex;
+        a{
+            padding:0px 15px 0px 15px;
+            text-decoration: none;
+        }
+    }
+}

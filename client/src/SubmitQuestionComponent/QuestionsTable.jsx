@@ -10,11 +10,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import WarningPopupModel from "../Utils/WarningPopUpModel"
 import DataTable from "../Utils/DataTable";
 import "./AddQuestions.scss";
-import CircularProgress from '@material-ui/core/CircularProgress';
 import QuestionsContext from '../Context/QuestionsContext/QuestionsContext';
 import CommonConstants from '../Utils/CommonConstants';
 import QuestionsVisualization from './QuestionsVisualization';
-
 
 const LightTooltip = withStyles((theme) => ({
     tooltip: {
@@ -24,7 +22,6 @@ const LightTooltip = withStyles((theme) => ({
         fontSize: 14,
     },
 }))(Tooltip);
-
 
 function SubmitQuestion(props) {
 
@@ -37,7 +34,6 @@ function SubmitQuestion(props) {
     const [showWarningPopup, setShowWarningPopup] = useState(false);
     const [questionIdForDelete, setQuestionIdForDelete] = useState(0);
     const [showVisualization,setShowVisualization]=useState(false);
-    const [spinner,setSpinner]=useState(false);
     const { getAllQuestions, questions, deleteQuestion,updateQuestion } = useContext(QuestionsContext);
 
     useEffect(() => {
@@ -45,13 +41,10 @@ function SubmitQuestion(props) {
     }, []);
 
     const handleChangePage = (event, newPage) => {
-        setSpinner(true);
         setPage(newPage);
         getAllQuestions(newPage, rowsPerPage);
-        //setSpinner(false);
     };
     const getDataOnPageChange =(pageSize)=>{
-        setSpinner(true);
         setPage(1);
         getAllQuestions(1, pageSize);
     }
@@ -140,7 +133,6 @@ function SubmitQuestion(props) {
     return (
         <div className="questions-container">
             <Home />
-            {spinner && <CircularProgress/>}
             {showVisualization && <QuestionsVisualization open={showVisualization} onClose={()=>setShowVisualization(false)}/>}
             {updateQuestioninList && <ChangeQuestionStatusModel updateQuestion={updateQuestioninList} open={statusModelOpen} CQData={currentQuestion} onClose={() => setStatusModelOpen(false)} />}
             {open && <SubmitQuestionModel open={open} editFormData={formDataToEdit} onClose={() => setOpen(false)} />}
@@ -163,5 +155,3 @@ function SubmitQuestion(props) {
     )
 }
 export default SubmitQuestion
-
-//<MaterialTable columns={columns} tableRef={props.tableRef} title="Contacts" isLoading={!props.remote} onSearchChange={e => searchInData(e)} data={props.contactList} key={props.limit} components={{ Pagination: () => { return (<TablePagination rowsPerPageOptions={[5, 10, 25]} count={props.count} rowsPerPage={props.limit} page={props.page - 1} onChangePage={handleChangePage} onChangeRowsPerPage={handleChangeRowsPerPage} />); }, }} actions={[{ icon: () => <FilterListIcon />, tooltip: 'Filters', isFreeAction: true, onClick: () => OpenFilterModal(), }, { icon: 'add', tooltip: 'Add Contact', isFreeAction: true, onClick: () => setAddDrawer(), },]} />

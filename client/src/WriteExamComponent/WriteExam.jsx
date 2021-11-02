@@ -31,7 +31,7 @@ function WriteExam(props) {
     const [questions, setQuestions] = useState([]);
     const [questionInfo, setQuestionInfo] = useState({});
     let [seconds, setSeconds] = useState(0);
-    let [minutes, setMinutes] = useState(20);
+    let [minutes, setMinutes] = useState(2);
     const [openSubmitWarningModel, setOpenSubmitWarningModel] = useState(false);
     const [warningMessage, setWarningMessage] = useState(CommonConstants.Submit_Exam_Warning);
     const [openExamResultsModel, setOpenExamResultsModel] = useState(false);
@@ -106,6 +106,7 @@ function WriteExam(props) {
                 }
                 if (minutes <= 0 && seconds === 0) {
                     clearInterval(fooo);
+                    handleSubmit();
                 }
             }
             let fooo = setInterval(down, 1000);
@@ -153,8 +154,7 @@ function WriteExam(props) {
         setOpenSubmitWarningModel(true)
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = () => {
         const range = selectedRange.split('-');
         const pageNumber = parseInt(range[0]);
         setLoader(true);
