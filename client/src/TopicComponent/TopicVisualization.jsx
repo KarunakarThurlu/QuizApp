@@ -30,7 +30,8 @@ const QuestionsVisualization = (props) => {
         chartType: CommonConstants.BAR_CAHRT, 
         seriesData: data && data.seriesData,
         drilldowndata: data && data.drillDownData,
-        title:"Questions count by Topic Name"
+        title:"Questions count by Topic Name",
+        seriesName: "Topic Name",
     }
     
     return (

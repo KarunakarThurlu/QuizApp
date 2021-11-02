@@ -16,10 +16,17 @@
       .Question-name-form-controll {
         .MuiFormLabel-root {
           line-height: 1.4;
+          color: rgb(4, 4, 90);
         }
         .MuiFormGroup-root {
           margin: 30px 0px 20px 0px;
           padding-left: 5px;
+          .MuiFormControlLabel-root{
+            color: rgb(4, 4, 90);
+            .MuiButtonBase-root{
+              color: rgb(4, 4, 90);
+            }
+          }
         }
       }
       .next-buttons {

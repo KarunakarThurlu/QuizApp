@@ -23,7 +23,7 @@ function DataTable(props) {
     return (
         <>
             <MaterialTable
-                title=<h4 title={props.data.totalCount }>{props.data.title} </h4>
+                title={props.data.title}
                 data={props.data.rows}
                 columns={props.data.columns}
                 actions={
