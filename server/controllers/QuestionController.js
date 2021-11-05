@@ -69,10 +69,9 @@ exports.getAllQuestions = async (request, response, next) => {
     try {
         const pageNumber = parseInt(request.query.pageNumber) - 1 || 0;
         const pageSize = parseInt(request.query.pageSize) || 5;
-        const totalCount = await Question.find({})
-            .populate({ path: "creator", select: ["name", "email"] })
-            .populate({ path: "topic", select: "topicName" }).countDocuments();
-        const questions = await Question.find({})
+        //sort by updatedOn
+        const totalCount = await Question.find({}).count();
+        const questions = await Question.find({}).sort({ updatedOn: -1 })
             .populate({ path: "creator", select: ["name", "email"] })
             .populate({ path: "topic", select: "topicName" })
             .skip(pageNumber * pageSize).limit(pageSize);

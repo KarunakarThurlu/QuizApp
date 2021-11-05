@@ -26,7 +26,7 @@ function Login(props) {
     const validate = (name, value) => {
         let error = "";
         if (name === "email") {
-            error = value.length === 0 ? "UserName is required" : "";
+            error = value.length === 0 ? "Email is required" : "";
         }
         if(name === "email" && value.length > 0){
             error= HelperUtils.validateEmail(value) ? "" : "Invalid Email";
@@ -41,7 +41,7 @@ function Login(props) {
         let errorsObj={email:"",password:""};
         if (data.email.length === 0) {
             valid = false;
-            errorsObj.email = "UserName is required";
+            errorsObj.email = "Email is required";
         }
         if(data.email.length > 0){
             valid= HelperUtils.validateEmail(data.email) ? valid : false;

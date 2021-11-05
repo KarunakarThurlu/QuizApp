@@ -9,7 +9,7 @@ const ExamModel = new mongoose.Schema({
     TopicName: { type: String, required: true, trim: true },
     TestScore: { type: Number, required: true },
     Date: { type: Date, required: true, default: Date.now },
-    Email: { type: String, required: true, unique: true, lowercase: true },
+    Email: { type: String, required: true,  lowercase: true },
     UserId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 });
 

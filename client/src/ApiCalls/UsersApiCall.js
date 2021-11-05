@@ -19,7 +19,12 @@ const UsersApiCalls = {
         });
     },
     saveUser: async (data) => {
-        return  axios.post(`/user/saveuser`, data);
+        const token = await GetAuthToken();
+        return  axios.post(`/user/saveuser`, data,{
+            headers: {
+                Authorization: `Bearer ` + token,
+            },
+        });
     },
     updateUser: async (data) => {
         const token = await GetAuthToken();

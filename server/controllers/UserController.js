@@ -72,6 +72,16 @@ exports.saveUser = async (request, response, next) => {
             let rolesFromUI = request.body.roles;
             for (let role of rolesFromUI) {
                 let roleExisted = await Role.findOne({ role_name: role.role_name });
+                if(roleExisted && roleExisted.role_name === 'ADMIN'){
+                    const authorization = request.headers["authorization"];
+                    if(authorization === undefined || authorization === null || authorization === ''){
+                        return response.json({ data: {}, statusCode: 400, message: "You are not authorized to perform this action!" });
+                    }
+                    const requestUser = await GetUserFromToken.getUserDetailsFromToken(request);
+                    if(requestUser.roles.find(roleObject => roleObject.role_name === "SUPER_ADMIN") === undefined){
+                        return response.json({ data: request.body, statusCode: 400, message: "You are not authorized to create admin user!" });
+                    }
+                }
                 if (roleExisted && roleExisted.role_name === 'SUPER_ADMIN') {
                     return response.json({ data: request.body, statusCode: 401, message: "Access Denied" });
                 }
@@ -146,7 +156,7 @@ exports.getAllUsers = async (request, response, next) => {
         const pageNumber = parseInt(request.query.pageNumber) - 1 || 0;
         const pageSize = parseInt(request.query.pageSize) || 5;
         const totalCount = await User.find().countDocuments();
-        const users = await User.find({}, { password: false })
+        const users = await User.find({}, { password: false }).sort({ updatedOn: -1 })
             .populate({ path: "company", select: ["name", "companyId"] })
             .populate({ path: "roles", select: ["role_name", "roleId"] })
             .skip(pageNumber * pageSize)

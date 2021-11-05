@@ -82,8 +82,8 @@ const AddQuestion = () => {
                 if (value === '') {
                     setErrors({ ...errors, optionA: 'Option A is required' });
                 } else {
-                    if (value.length > 70) {
-                        setErrors({ ...errors, optionA: 'Option A should be less than 40 characters' });
+                    if (value.length > 80) {
+                        setErrors({ ...errors, optionA: 'Option A should be less than 80 characters' });
                     } else {
                         setErrors({ ...errors, optionA: '' });
                     }
@@ -93,8 +93,8 @@ const AddQuestion = () => {
                 if (value === '') {
                     setErrors({ ...errors, optionB: 'Option B is required' });
                 } else {
-                    if (value.length > 70) {
-                        setErrors({ ...errors, optionB: 'Option B should be less than 40 characters' });
+                    if (value.length > 80) {
+                        setErrors({ ...errors, optionB: 'Option B should be less than 80 characters' });
                     } else {
                         setErrors({ ...errors, optionB: '' });
                     }
@@ -104,8 +104,8 @@ const AddQuestion = () => {
                 if (value === '') {
                     setErrors({ ...errors, optionC: 'Option C is required' });
                 } else {
-                    if (value.length > 70) {
-                        setErrors({ ...errors, optionC: 'Option C should be less than 40 characters' });
+                    if (value.length > 80) {
+                        setErrors({ ...errors, optionC: 'Option C should be less than 80 characters' });
                     } else {
                         setErrors({ ...errors, optionC: '' });
                     }
@@ -115,8 +115,8 @@ const AddQuestion = () => {
                 if (value === '') {
                     setErrors({ ...errors, optionD: 'Option D is required' });
                 } else {
-                    if (value.length > 70) {
-                        setErrors({ ...errors, optionD: 'Option D should be less than 40 characters' });
+                    if (value.length > 80) {
+                        setErrors({ ...errors, optionD: 'Option D should be less than 80 characters' });
                     } else {
                         setErrors({ ...errors, optionD: '' });
                     }

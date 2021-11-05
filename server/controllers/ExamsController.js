@@ -10,13 +10,13 @@ exports.getAllExamsDetails = async (request, response, next) => {
         let exams;
         let totalCount;
         if (isAdmin) {
-            exams = await Exam.find({})
+            exams = await Exam.find({}).sort({ Date: -1 })
                 .populate("TestQuestions")
                 .skip(pageNumber * pageSize)
                 .limit(pageSize);
             totalCount = await Exam.find().countDocuments();
         } else {
-            exams = await Exam.find({ UserId: requestUser._id })
+            exams = await Exam.find({ UserId: requestUser._id }).sort({ Date: -1 })
                 .populate("TestQuestions")
                 .skip(pageNumber * pageSize)
                 .limit(pageSize);

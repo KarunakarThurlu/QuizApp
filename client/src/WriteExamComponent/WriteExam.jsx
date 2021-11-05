@@ -174,7 +174,7 @@ function WriteExam(props) {
                 console.log(error);
                 setLoader(false);
             })
-            .final(() => setLoader(false));
+            .finally(() => setLoader(false));
     }
     const getRangeList = (size) => {
         let array = [];
@@ -198,17 +198,11 @@ function WriteExam(props) {
         return array;
     }
 
-    const warnOnLeavingExampage=()=>{
-        if(questions.length>0){
-            setOpenSubmitWarningModel(true);
-            setWarningMessage(CommonConstants.Exam_Exit_warning);
-            return false;
-        }
-    }
+  
     return (
         <div className="write-exam-container">
             <Home />
-            <Prompt when={true} message={warnOnLeavingExampage}  />
+            {/* <Prompt when={true} message={warnOnLeavingExampage}  /> */}
             <WarningPopUpModel open={openSubmitWarningModel} message={warningMessage} onClickYes={handleSubmit} handleClose={() => setOpenSubmitWarningModel(false)} />
             <ExamResults open={openExamResultsModel} handleClose={() => setOpenExamResultsModel(false)} testScore={testScore} />
             {loader && <Spinner open={loader} />}
