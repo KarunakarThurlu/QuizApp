@@ -31,7 +31,7 @@ function WriteExam(props) {
     const [questions, setQuestions] = useState([]);
     const [questionInfo, setQuestionInfo] = useState({});
     let [seconds, setSeconds] = useState(0);
-    let [minutes, setMinutes] = useState(2);
+    let [minutes, setMinutes] = useState(20);
     const [openSubmitWarningModel, setOpenSubmitWarningModel] = useState(false);
     const [warningMessage, setWarningMessage] = useState(CommonConstants.Submit_Exam_Warning);
     const [openExamResultsModel, setOpenExamResultsModel] = useState(false);
@@ -40,7 +40,7 @@ function WriteExam(props) {
     const [loader, setLoader] = useState(false);
     const [selectedRange, setSelectedRange] = useState('');
     const [errors, setErrors] = useState({ topic: '', questionsrange: '' });
-
+    let clearTimer =null;
     useEffect(() => {
         TopicApiCall.getAllTopicsWithoutpagination()
             .then(response => setTopics(response.data.data))
@@ -94,7 +94,7 @@ function WriteExam(props) {
                     console.log(error);
                 })
             setStartExam(true);
-            const down = () => {
+            clearTimer = setInterval(() => {
                 if (seconds === 0) {
                     seconds = 59;
                     setSeconds(seconds);
@@ -105,13 +105,40 @@ function WriteExam(props) {
                     setSeconds(seconds);
                 }
                 if (minutes <= 0 && seconds === 0) {
-                    clearInterval(fooo);
-                    handleSubmit();
+                    clearInterval(clearTimer);
+                    handleExamSubmit();
                 }
-            }
-            let fooo = setInterval(down, 1000);
+            }, 1000);
         }
     }
+
+    const handleExamSubmit = () => {
+        const range = selectedRange.split('-');
+        const pageNumber = parseInt(range[0]);
+        setLoader(true);
+        setMinutes(0);
+        setSeconds(0);
+        setSelectedRange("");
+        clearInterval(clearTimer);
+        QuestionsApiCall.getTestResults(questions, pageNumber-1, topicName)
+            .then(response => {
+                setLoader(false);
+                if (response.data.statusCode === 200) {
+                    setTestScore(response.data.testScore);
+                    setOpenExamResultsModel(true);
+                    setStartExam(false);
+                    setTopicName('');
+                    setQuestions([]);
+                    setOpenSubmitWarningModel(false)
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                setLoader(false);
+            })
+            .finally(() => setLoader(false));
+    }
+   
 
     const validateForm = () => {
         let isValid = true;
@@ -154,28 +181,6 @@ function WriteExam(props) {
         setOpenSubmitWarningModel(true)
     }
 
-    const handleSubmit = () => {
-        const range = selectedRange.split('-');
-        const pageNumber = parseInt(range[0]);
-        setLoader(true);
-        QuestionsApiCall.getTestResults(questions, pageNumber-1, topicName)
-            .then(response => {
-                setLoader(false);
-                if (response.data.statusCode === 200) {
-                    setTestScore(response.data.testScore);
-                    setOpenExamResultsModel(true);
-                    setStartExam(false);
-                    setTopicName('');
-                    setQuestions([]);
-                    setOpenSubmitWarningModel(false)
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                setLoader(false);
-            })
-            .finally(() => setLoader(false));
-    }
     const getRangeList = (size) => {
         let array = [];
         if (size <= 20) {
@@ -203,8 +208,8 @@ function WriteExam(props) {
         <div className="write-exam-container">
             <Home />
             {/* <Prompt when={true} message={warnOnLeavingExampage}  /> */}
-            <WarningPopUpModel open={openSubmitWarningModel} message={warningMessage} onClickYes={handleSubmit} handleClose={() => setOpenSubmitWarningModel(false)} />
-            <ExamResults open={openExamResultsModel} handleClose={() => setOpenExamResultsModel(false)} testScore={testScore} />
+            {openSubmitWarningModel && <WarningPopUpModel open={openSubmitWarningModel} message={warningMessage} onClickYes={handleExamSubmit} handleClose={() => setOpenSubmitWarningModel(false)} />}
+            {openExamResultsModel && <ExamResults open={openExamResultsModel} handleClose={() => setOpenExamResultsModel(false)} testScore={testScore} />}
             {loader && <Spinner open={loader} />}
             {startExam === true ? <Grid container className="writeexam" spacing={0}>
                 <Grid item xs={8} >
@@ -253,10 +258,10 @@ function WriteExam(props) {
                                 label="Topic"
                                 name="Topic"
                                 onClick={handleTopicSelect}
+                                value={topicName}
                                 error={errors.topic !== ""}
                                 helperText={errors.topic}
                             >
-                                <MenuItem aria-label="None" value="" />
                                 {topics.map(t => (<MenuItem value={t._id}>{t.topicName}</MenuItem>))}
                             </Select>
                         </FormControl>
@@ -267,6 +272,7 @@ function WriteExam(props) {
                                // native
                                 label="Questions Range"
                                 name="questionsrange"
+                                value={selectedRange}
                                 onClick={(e) => {
                                     setSelectedRange(e.target.value);
                                     if (e.target.value !== '') {
@@ -276,7 +282,6 @@ function WriteExam(props) {
                                 error={errors.questionsrange !== ""}
                                 helperText={errors.questionsrange}
                             >
-                                <MenuItem aria-label="None" value="" />
                                 {rangedata.map((v, i) => (<MenuItem key={i} value={v}>{v}</MenuItem>))}
                             </Select>
                         </FormControl>
