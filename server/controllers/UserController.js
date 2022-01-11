@@ -14,7 +14,7 @@ const CommonConstants = require("../utils/CommonConstants");
 //login
 exports.login = async (request, response, next) => {
     try {
-        let user = await User.findOne({ email: request.body.email }).populate("roles");
+        let user = await User.findOne({ email: { $eq : request.body.email } }).populate("roles");
         if (user === null)
             return response.json({ data: request.body, statusCode: 400, "message": request.body.email + " is not Found in our database. Please signup!." });
         let validpassword = await bcrypt.compare(request.body.password, user.password);
@@ -48,7 +48,7 @@ exports.uploadProfilePicture = async (request, response, next) => {
                 });
             }
 
-            await User.findByIdAndUpdate({ _id: requestUser._id }, { $set: { profilePicture: url + '/uploads/' + request.file.filename } });
+            await User.findByIdAndUpdate({ _id: {$eq : requestUser._id } }, { $set: { profilePicture: url + '/uploads/' + request.file.filename } });
             let updatedUser = await User.findOne({ _id: requestUser._id }, { password: false }).populate('roles');
             CacheService.set(updatedUser._id.toString(), updatedUser);
             return response.json({ data: updatedUser, statusCode: 200, message: "Profile Picture Uploaded Successfully!" });
@@ -64,14 +64,14 @@ exports.uploadProfilePicture = async (request, response, next) => {
 
 exports.saveUser = async (request, response, next) => {
     try {
-        let userExists = await User.findOne({ email: request.body.email });
+        let userExists = await User.findOne({ email:{ $eq: request.body.email} });
         if (userExists)
             return response.json({ data: request.body, statusCode: 400, message: `Email ${request.body.email} Already Exists` });
         let roles = [];
         if (request.body.roles.length !== 0) {
             let rolesFromUI = request.body.roles;
             for (let role of rolesFromUI) {
-                let roleExisted = await Role.findOne({ role_name: role.role_name });
+                let roleExisted = await Role.findOne({ role_name: { $eq : role.role_name } });
                 if(roleExisted && roleExisted.role_name === 'ADMIN'){
                     const authorization = request.headers["authorization"];
                     if(authorization === undefined || authorization === null || authorization === ''){
@@ -119,7 +119,8 @@ exports.saveUser = async (request, response, next) => {
 exports.changePassword = async (request, response, next) => {
     try {
         const requestUser = await GetUserFromToken.getUserDetailsFromToken(request);
-        let userFromDB = await User.findOne({ _id: request.body._id===""? requestUser._id:request.body._id },{password:true});
+        const userId = request.body._id===""? requestUser._id:request.body._id ;
+        let userFromDB = await User.findOne({ _id: { $eq : userId } },{password:true});
         if (userFromDB) {
             if (request.body.currentPassword === null || request.body.currentPassword === undefined || request.body.currentPassword === "") {
                 if (requestUser.roles.find(role => role.role_name === "SUPER_ADMIN") === undefined) {
@@ -130,7 +131,7 @@ exports.changePassword = async (request, response, next) => {
                 if (!validpassword)
                     return response.json({ data: request.body, statusCode: 400, message: "Current Password is Invalid!" });
             }
-            await User.findByIdAndUpdate({ _id: userFromDB._id }, { $set: { password: bcrypt.hashSync(request.body.newPassword, 10) } });
+            await User.findByIdAndUpdate({ _id : userFromDB._id.toString()  }, { $set: { password: bcrypt.hashSync(request.body.newPassword, 10) } });
             return response.json({ data: {}, statusCode: 200, message: "Password Changed Successfully!" });
         } else {
             return response.json({ data: {}, statusCode: 400, message: "User Not Found!" });
@@ -141,7 +142,7 @@ exports.changePassword = async (request, response, next) => {
 }
 exports.getUserById = async (request, response, next) => {
     try {
-        let user = await User.findOne({ _id: request.query.id }).populate('roles');
+        let user = await User.findOne({ _id: { $eq : request.query.id } }).populate('roles');
         if (user)
             return response.json({ data: user, statusCode: 200, message: "User Saved" });
         else
@@ -173,7 +174,7 @@ exports.getAllUsers = async (request, response, next) => {
 
 exports.updateUser = async (request, response, next) => {
     try {
-        const userFromDB = await User.findOne({ _id: request.body._id });
+        const userFromDB = await User.findOne({ _id: { $eq:request.body._id } });
         if (userFromDB) {
             //updating user fields
             let keys = Object.keys(request.body);
@@ -184,7 +185,7 @@ exports.updateUser = async (request, response, next) => {
             if (request.body.roles !== undefined && request.body.roles.length !== 0) {
                 let rolesFromUI = request.body.roles;
                 for (let role of rolesFromUI) {
-                    let roleExisted = await Role.findOne({ role_name: role.role_name });
+                    let roleExisted = await Role.findOne({ role_name: { $eq : role.role_name } });
                     if (roleExisted && roleExisted.role_name === 'SUPER_ADMIN') {
                        return response.json({ data: request.body, statusCode: 401, message: "Access Denied" });
                     }
@@ -198,8 +199,8 @@ exports.updateUser = async (request, response, next) => {
                 }
             }
             userFromDB.roles = roles;
-            await User.findOneAndUpdate({ _id: request.body._id }, userFromDB);
-            const user = await User.findOne({ _id: request.body._id }).populate('roles');
+            await User.findOneAndUpdate({ _id: { $eq : request.body._id } }, userFromDB);
+            const user = await User.findOne({ _id: { $eq : request.body._id } }).populate('roles');
             user.password = undefined;
             CacheService.del(user._id.toString());
             CacheService.del(CommonConstants.KEYS.USERS_VISULN);
@@ -214,10 +215,10 @@ exports.updateUser = async (request, response, next) => {
 
 exports.deleteUserById = async (request, response, next) => {
     try {
-        const userFromDB = await User.findOne({ _id: request.query.id });
+        const userFromDB = await User.findOne({ _id: { $eq :request.query.id } });
         if (userFromDB) {
             //change status to INACTIVE
-            await User.findByIdAndUpdate({ _id: request.query.id }, { $set: { status: "INACTIVE" } });
+            await User.findByIdAndUpdate({ _id: userFromDB._id.toString() } , { $set: { status: "INACTIVE" } });
             CacheService.del(CommonConstants.KEYS.USERS_VISULN);
             return response.json({ data: {}, statusCode: 200, message: "Deleted Successfully" });
         } else {

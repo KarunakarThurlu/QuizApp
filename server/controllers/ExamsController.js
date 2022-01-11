@@ -35,7 +35,7 @@ exports.getAllExamsDetails = async (request, response, next) => {
 }
 exports.deleteExam = async (request, response, next) => {
     try {
-        const exam = await Exam.findById({ _id: request.query.id });
+        const exam = await Exam.findById({ _id: {$eq : request.query.id } });
         if (!exam) {
             return response.json({ data: {}, statusCode: 404, message: "Exam not found" });
         }

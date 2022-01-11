@@ -25,9 +25,9 @@ exports.saveQuestion = async (request, response, next) => {
 
 exports.deleteQuestionById = async (request, response, next) => {
     try {
-        const question = await Question.findById({ _id: request.query.id });
+        const question = await Question.findById({ _id: {$eq : request.query.id  } });
         if (question)
-            await Question.findByIdAndDelete({ _id: question.id }, (errror, doc, res) => response.json({ data: {}, statusCode: 200, message: "Question deleted" }));
+            await Question.findByIdAndDelete({ _id: {$eq : question.id  } }, (errror, doc, res) => response.json({ data: {}, statusCode: 200, message: "Question deleted" }));
         else
             return response.json({ data: {}, statusCode: 400, message: "Question Not Found" });
     } catch (error) {
@@ -37,14 +37,15 @@ exports.deleteQuestionById = async (request, response, next) => {
 exports.updateQuestion = async (request, response, next) => {
 
     try {
-        const questionFromDB = await Question.findOne({ _id: request.body._id });
+        
+        const questionFromDB = await Question.findOne({ _id: {$eq:request.body._id} });
         if (questionFromDB) {
             let keys = Object.keys(request.body);
             keys.map((v, i) => {
                 questionFromDB[keys[i]] = request.body[v];
             });
             questionFromDB["updatedOn"] = Date.now();
-            const updatedQuestion = await Question.findByIdAndUpdate({ _id: request.body._id }, questionFromDB, (error, doc, res) => { });
+            const updatedQuestion = await Question.findByIdAndUpdate({ _id: { $eq : request.body._id } }, questionFromDB, (error, doc, res) => { });
             return response.json({ data: updatedQuestion, statusCode: 200, message: "Question updated" });
         } else {
             return response.json({ data: {}, statusCode: 400, message: "nottttttttt found" });
@@ -55,7 +56,7 @@ exports.updateQuestion = async (request, response, next) => {
 }
 exports.getQuestionById = async (request, response, next) => {
     try {
-        const question = await Question.findById({ _id: request.query.id }).populate("creator").populate("topic_id");
+        const question = await Question.findById({ _id: { $eq : request.query.id } }).populate("creator").populate("topic_id");
         if (question)
             return response.json({ data: question, statusCode: 200, message: "User Saved" });
         else
@@ -89,7 +90,7 @@ exports.getQuestionsForExam = async (request, response, next) => {
     try {
         const pageNumber = request.query.pageNumber || 0;
         const pageSize = request.query.pageSize || 20;
-        const questions = await Question.find({ topic: request.query.topicId, status: "APPROVED" }, { answer: false }).skip(pageNumber).limit(pageSize);
+        const questions = await Question.find({ topic: {$eq : request.query.topicId }, status: "APPROVED" }, { answer: false }).skip(pageNumber).limit(pageSize);
         if (questions)
             return response.json({ data: questions, statusCode: 200, message: "OK" });
         else
@@ -100,7 +101,7 @@ exports.getQuestionsForExam = async (request, response, next) => {
 }
 exports.totalQuestionsCountOfTopic = async (request, response, next) => {
     try {
-        const questions = await Question.find({ topic: request.query.id, status: "APPROVED" }).count();
+        const questions = await Question.find({ topic: {$eq : request.query.id }, status: "APPROVED" }).count();
         if (questions)
             return response.json({ data: questions, statusCode: 200, message: "OK" });
         else
@@ -118,7 +119,7 @@ exports.getQuestionsForExam = async (request, response, next) => {
         } else {
             const pageNumber = request.query.pageNumber || 0;
             const pageSize = request.query.pageSize || 20;
-            const questions = await Question.find({ topic: request.query.topicId, status: "APPROVED" }, { answer: false }).skip(parseInt(pageNumber)).limit(parseInt(pageSize));
+            const questions = await Question.find({ topic: {$eq : request.query.topicId }, status: "APPROVED" }, { answer: false }).skip(parseInt(pageNumber)).limit(parseInt(pageSize));
             if (questions)
                 return response.json({ data: questions, statusCode: 200, message: "OK" });
             else
@@ -136,8 +137,8 @@ exports.getAllQuestionsByTopicId = async (request, response, next) => {
         } else {
             const pageNumber = request.body.pageNumber || 0;
             const pageSize = request.body.pageSize || 20;
-            const totalCount = await Question.find({ topic: request.query.id }, { answer: false }).count();
-            const questions = await Question.find({ topic: request.query.id }, { answer: false }).skip(pageNumber).limit(pageSize);
+            const totalCount = await Question.find({ topic: {$eq : request.query.id  } }, { answer: false }).count();
+            const questions = await Question.find({ topic: { $eq : request.query.id } }, { answer: false }).skip(pageNumber).limit(pageSize);
             if (questions)
                 return response.json({ data: questions, totalCount: totalCount, statusCode: 200, message: "OK" });
             else
@@ -156,11 +157,11 @@ exports.userQuestionsViewInDashboard = async (request, response, next) => {
         let questions;
         let totalCount;
         if (status === "TOTAL") {
-            questions = await Question.find({ creator: user._id }).skip(parseInt(pageNumber)).limit(parseInt(pageSize));
-            totalCount = await Question.find({ creator: user._id }).count();
+            questions = await Question.find({ creator: { $eq :user._id } }).skip(parseInt(pageNumber)).limit(parseInt(pageSize));
+            totalCount = await Question.find({ creator:{ $eq :user._id } }).count();
         } else {
-            questions = await Question.find({ creator: user._id, status: status }).skip(parseInt(pageNumber)).limit(parseInt(pageSize));
-            totalCount = await Question.find({ creator: user._id, status: status }).count();
+            questions = await Question.find({ creator: {$eq : user._id }, status: {$eq : status } }).skip(parseInt(pageNumber)).limit(parseInt(pageSize));
+            totalCount = await Question.find({ creator: {$eq : user._id }, status: { $eq : status } }).count();
         }
         return response.json({ data: questions, totalCount: totalCount, statusCode: 200, message: "OK" });
     } catch (error) {
@@ -210,7 +211,7 @@ exports.getTestScore = async (request, response, next) => {
         } else {
             const pageNumber = request.query.pageNumber || 0;
             const pageSize = request.query.pageSize || 20;
-            const questions = await Question.find({ topic: request.query.id }).skip(parseInt(pageNumber)).limit(parseInt(pageSize));
+            const questions = await Question.find({ topic: { $eq :request.query.id } }).skip(parseInt(pageNumber)).limit(parseInt(pageSize));
             if (questions) {
                 const answeredQuestions = request.body;
                 const TestQuestions = [];
@@ -236,7 +237,7 @@ exports.getTestScore = async (request, response, next) => {
                     })
                 });
                 //Saving Exam Details
-                const topic = await Topic.findOne({ _id: request.query.id });
+                const topic = await Topic.findOne({ _id: { $eq :request.query.id  } });
                 const examResults = new Exam({
                     Name: user.firstName + " " + user.lastName,
                     Email: user.email,

@@ -27,14 +27,14 @@ exports.saveTopic = async (request, response, next) => {
 exports.updateTopic = async (request, response, next) => {
     const requestUser = await GetUserFromToken.getUserDetailsFromToken(request);
     try {
-        let topic = await Topic.findOne({ _id: request.body._id });
+        let topic = await Topic.findOne({ _id: {$eq : request.body._id  } });
         if (topic) {
             let keys = Object.keys(request.body);
             keys.map((v, i) => {
                 topic._doc[keys[i]] = request.body[v];
             });
             topic.creator = requestUser._id;
-            const updatedTopic = await Topic.findByIdAndUpdate({ _id: request.body._id }, topic, (error, doc, res) => { });
+            const updatedTopic = await Topic.findByIdAndUpdate({ _id: {$eq : request.body._id  } }, topic, (error, doc, res) => { });
             CacheService.del("allTopicsForDropDown");
             CacheService.del(Constants.KEYS.QUETIONS_VISULN);
             return response.json({ data: updatedTopic, statusCode: 200, message: "Topic Updated Successfully." });
@@ -49,7 +49,7 @@ exports.updateTopic = async (request, response, next) => {
 
 exports.findTopicById = async (request, response, next) => {
     try {
-        const t = await Topic.findOne({ _id: request.query.id }).populate({ path: "creator", select: ["name", "email"] });
+        const t = await Topic.findOne({ _id: { $eq : request.query.id } }).populate({ path: "creator", select: ["name", "email"] });
         return response.json({ data: t, statusCode: 200, message: "OK" });
     } catch (error) {
         return response.json({ data: {}, statusCode: 500, message: error.message });
@@ -58,7 +58,7 @@ exports.findTopicById = async (request, response, next) => {
 
 exports.deleteTopicById = async (request, response, next) => {
     try {
-        const topic = await Topic.findById({ _id: request.query.id });
+        const topic = await Topic.findById({ _id: {$eq : request.query.id } });
         if (topic) {
             await Question.deleteMany({ topic: topic._id });
             await Exam.deleteMany({ TopicName: topic.topicName });
