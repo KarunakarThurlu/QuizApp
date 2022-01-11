@@ -6,7 +6,7 @@ exports.getAllExamsDetails = async (request, response, next) => {
     try {
         const pageNumber = parseInt(request.query.pageNumber) - 1 || 0;
         const pageSize = parseInt(request.query.pageSize) || 5;
-        let isAdmin = requestUser.roles.some(role => role.role_name === "ADMIN");
+        let isAdmin = requestUser.roles.some(role => role.role_name === "SUPER_ADMIN");
         let exams;
         let totalCount;
         if (isAdmin) {

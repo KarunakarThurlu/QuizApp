@@ -66,8 +66,8 @@ function SubmitQuestionModel(props) {
                 } else {
                     if (value.length < 10) {
                         setErrors({ ...errors, name: 'Question should be atleast 10 characters' });
-                    } else if (value.length > 150) {
-                        setErrors({ ...errors, name: 'Question should be less than 100 characters' });
+                    } else if (value.length > 300) {
+                        setErrors({ ...errors, name: 'Question should be less than 300 characters' });
                     } else {
                         setErrors({ ...errors, name: "" });
                     }
@@ -77,8 +77,8 @@ function SubmitQuestionModel(props) {
                 if (value === '') {
                     setErrors({ ...errors, optionA: 'Option A is required' });
                 } else {
-                    if (value.length > 80) {
-                        setErrors({ ...errors, optionA: 'Option A should be less than 80 characters' });
+                    if (value.length > 150) {
+                        setErrors({ ...errors, optionA: 'Option A should be less than 150 characters' });
                     } else {
                         setErrors({ ...errors, optionA: '' });
                     }
@@ -88,8 +88,8 @@ function SubmitQuestionModel(props) {
                 if (value === '') {
                     setErrors({ ...errors, optionB: 'Option B is required' });
                 } else {
-                    if (value.length > 80) {
-                        setErrors({ ...errors, optionB: 'Option B should be less than 80 characters' });
+                    if (value.length > 150) {
+                        setErrors({ ...errors, optionB: 'Option B should be less than 150 characters' });
                     } else {
                         setErrors({ ...errors, optionB: '' });
                     }
@@ -99,8 +99,8 @@ function SubmitQuestionModel(props) {
                 if (value === '') {
                     setErrors({ ...errors, optionC: 'Option C is required' });
                 } else {
-                    if (value.length > 80) {
-                        setErrors({ ...errors, optionC: 'Option C should be less than 80 characters' });
+                    if (value.length > 150) {
+                        setErrors({ ...errors, optionC: 'Option C should be less than 150 characters' });
                     } else {
                         setErrors({ ...errors, optionC: '' });
                     }
@@ -110,8 +110,8 @@ function SubmitQuestionModel(props) {
                 if (value === '') {
                     setErrors({ ...errors, optionD: 'Option D is required' });
                 } else {
-                    if (value.length > 80) {
-                        setErrors({ ...errors, optionD: 'Option D should be less than 80 characters' });
+                    if (value.length > 150) {
+                        setErrors({ ...errors, optionD: 'Option D should be less than 150 characters' });
                     } else {
                         setErrors({ ...errors, optionD: '' });
                     }
