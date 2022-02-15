@@ -1,5 +1,6 @@
 import React, { useState} from 'react'
 import Cropper from 'react-easy-crop'
+import Slider from '@material-ui/core/Slider';
 
 const ImageCropper = ({ getBlob, inputImg }) => {
     const [crop, setCrop] = useState({ x: 0, y: 0 })
@@ -43,15 +44,15 @@ const ImageCropper = ({ getBlob, inputImg }) => {
                 onCropComplete={onCropComplete}
                 onZoomChange={setZoom}
             />
-            {/* <Slider
+             <Slider
                 value={zoom}
                 min={1}
                 max={3}
                 step={0.1}
                 aria-labelledby="Zoom"
                 onChange={(e, zoom) => setZoom(zoom)}
-                classes={{ container: 'slider' }}
-            /> */}
+                //classes={{ container: 'slider' }}
+            /> 
         </>
     );
 }

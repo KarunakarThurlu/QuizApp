@@ -49,21 +49,21 @@ const UploadProfilePic = (props) => {
         }
 
     }
+    const constructImage = (row) => {
+        if(row){
+            return `data:${row.contentType};base64,${ new Buffer.from(row.data).toString('base64')}`;
+        }else{
+            return "/user.png";
+        }
+    }
 
     return (
         <div className="Image-container">
             <Dialog open={props.open} onClose={props.onClose} className="MuiDialog-paper-ProfilePic">
 
                 <DialogContent>
-                    {imagecrop === false && <Avatar
-                        src={props.image}
-                        alt="/user.png"
-
-                    />}
-                    {imagecrop === true && <ImageCropper
-                        getBlob={getBlob}
-                        inputImg={image}
-                    />}
+                    {imagecrop === false && <Avatar src={constructImage(props.image)} alt="/user.png"/>}
+                    {imagecrop === true && <ImageCropper getBlob={getBlob} inputImg={image}/>}
                 </DialogContent>
                 <DialogActions>
                     <TextField
@@ -72,8 +72,10 @@ const UploadProfilePic = (props) => {
                         onChange={handleChange}
                         error={errorMessage !== "" ? true : false}
                         helperText={errorMessage}
-                        type="file" />
-                    <Button variant="contained" onClick={handleUpload} className="addUserButton" color="primary">Upload</Button>
+                        type="file" 
+                        size='small'
+                         />
+                    <Button variant="outlined" size='small' onClick={handleUpload} className="addUserButton" color="primary">Upload</Button>
                 </DialogActions>
             </Dialog>
 

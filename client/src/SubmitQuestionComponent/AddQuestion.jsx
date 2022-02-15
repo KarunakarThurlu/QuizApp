@@ -291,7 +291,7 @@ const AddQuestion = () => {
                 />
 
                 <div className="submit">
-                    <Button type="submit" onClick={handleSubmit} className="MuiButton-containedPrimary" variant="contained" color="primary">Submit</Button>
+                    <Button type="submit" onClick={handleSubmit}  variant="outlined" color="primary">Submit</Button>
                 </div>
 
             </div>

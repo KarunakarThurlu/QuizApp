@@ -8,6 +8,7 @@ const fs = require("fs");
 var multer = require('multer');
 const CacheService = require("../utils/CacheSerive");
 const CommonConstants = require("../utils/CommonConstants");
+const path = require('path');
 
 
 
@@ -35,21 +36,16 @@ exports.login = async (request, response, next) => {
 exports.uploadProfilePicture = async (request, response, next) => {
     const requestUser = await GetUserFromToken.getUserDetailsFromToken(request);
     try {
-        const url = request.protocol + '://' + request.get('host')
-        let userFromDB = await User.findOne({ _id: requestUser._id });
-        if (userFromDB) {
-            //delete old image
-            if (userFromDB.profilePicture) {
-                let oldImagePath = "uploads/" + userFromDB.profilePicture.split("uploads/")[1];
-                fs.unlink(oldImagePath, (err) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
-            }
-
-            await User.findByIdAndUpdate({ _id: {$eq : requestUser._id } }, { $set: { profilePicture: url + '/uploads/' + request.file.filename } });
-            let updatedUser = await User.findOne({ _id: requestUser._id }, { password: false }).populate('roles');
+        let userFromDB = await User.findOne({ _id: requestUser._id.toString()});
+        if (userFromDB) {            
+            userFromDB.profilePicture = {
+                                         data :fs.readFileSync(request.file.path),
+                                         contentType: request.file.mimetype,
+                                       }
+ 
+            await userFromDB.save();
+            fs.unlinkSync(request.file.path);
+            let updatedUser = await User.findOne({ _id: requestUser._id.toString() }, { password: false }).populate('roles');
             CacheService.set(updatedUser._id.toString(), updatedUser);
             return response.json({ data: updatedUser, statusCode: 200, message: "Profile Picture Uploaded Successfully!" });
         } else {

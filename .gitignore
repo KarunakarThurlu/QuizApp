@@ -2,7 +2,6 @@
 .vscode
 .env
 node_modules
-uploads
 
 thunder-tests/thunderActivity.db
 thunder-tests/thunderclient.db

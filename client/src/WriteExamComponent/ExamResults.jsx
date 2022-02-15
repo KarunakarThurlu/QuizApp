@@ -28,7 +28,7 @@ export default function ExamResultsModel(props) {
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         <Typography color='primary' variant='h6' component='h6' align='center' >
-                           Your Test Score : {props.testScore}
+                           Your Test Score : {props.testScore}/20
                         </Typography>
                     </DialogContentText>
                 </DialogContent>

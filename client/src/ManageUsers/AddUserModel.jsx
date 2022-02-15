@@ -183,7 +183,13 @@ function AddUserModel(props) {
         setErrors(errorsObj);
         return isValid;
     };
-
+    const constructImage = (row) => {
+        if(row && row.profilePicture){
+            return `data:${row.profilePicture.contentType};base64,${ new Buffer.from(row.profilePicture.data).toString('base64')}`;
+        }else{
+            return "/user.png";
+        }
+    }
     return (
         <div className="AddUser-Model">
             <Dialog className="MuiDialog-paper-AddUserModel"
@@ -191,7 +197,7 @@ function AddUserModel(props) {
                 onClose={props.onClose}
             >
                 <MuiDialogTitle>
-                <img src={props.editFormData === null  ||  props.editFormData.profilePicture=== undefined ? '/user.png': props.editFormData.profilePicture } alt="" style={{ width: 40, borderRadius: '50%' }} />
+                <img src={constructImage(props.editFormData) } alt="" style={{ width: 40, borderRadius: '50%' }} />
                 </MuiDialogTitle>
                 <DialogContent>
                     <TextField
@@ -302,8 +308,8 @@ function AddUserModel(props) {
                     </div>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleSubmit} variant="contained" className="addUserButton" color="primary">{props.editFormData !== undefined && props.editFormData !== null?"Update":"AddUser"}</Button>
-                    <Button onClick={props.onClose} variant="contained" color="primary">Cancel</Button>
+                    <Button onClick={handleSubmit} variant="outlined" className="addUserButton" color="primary">{props.editFormData !== undefined && props.editFormData !== null?"Update":"AddUser"}</Button>
+                    <Button onClick={props.onClose} variant="outlined" color="primary">Cancel</Button>
                 </DialogActions>
             </Dialog>
         </div>

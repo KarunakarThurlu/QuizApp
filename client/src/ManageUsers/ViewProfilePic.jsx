@@ -7,6 +7,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 
 const ViewProfilePic = (props) => {
+    const constructImage = (row) => {
+        if(row){
+            return `data:${row.contentType};base64,${ new Buffer.from(row.data).toString('base64')}`;
+        }else{
+            return "/user.png";
+        }
+    }
     return (
         <div className="Image-container">
             <Dialog open={props.open} onClose={props.onClose} className="MuiDialog-paper-ProfilePic">
@@ -15,7 +22,7 @@ const ViewProfilePic = (props) => {
             </MuiDialogTitle>
                 <DialogContent>
                      <Avatar
-                        src={props.image}
+                        src={constructImage(props.image)}
                         alt=""
                     />
                 </DialogContent>

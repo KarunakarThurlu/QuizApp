@@ -58,11 +58,9 @@
 .MuiDialog-paper-ProfilePic{
   text-align: center;
   .MuiDialog-container{
-    
     .MuiPaper-root{
-      margin: 0px;
-      padding: 1px;
-      height: 30em;
+      margin-top: 3em;
+      height: 31em;
       max-width: 80em;
       width: 40em;
     }
@@ -81,14 +79,20 @@
         }
       }
       .reactEasyCrop_Container{
-        margin: 8px 8px 70px 8px;
+        margin: 40px 8px 55px 8px;
+        position: absolute;
         border-radius: 10px;
         align-items: center;
         align-content: center;
         text-align: center;
-        .reactEasyCrop_Image{
-          height: 26em;
+        .reactEasyCrop_CropArea{
+          height: 10em;
+          width: 10em;  
         }
+      }
+      .MuiSlider-root{
+        margin-bottom: 10px;
+        padding: 0px;
       }
       
     }

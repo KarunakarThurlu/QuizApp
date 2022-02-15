@@ -46,8 +46,10 @@ function SubmitQuestionModel(props) {
         e.preventDefault();
         if (validateForm()) {
             if (data._id !== '' && data._id !== undefined) {
+                data.topic = getTopicId();
                 updateQuestion(data);
             } else {
+                data.topic = getTopicId();
                 saveQuestion(data);
             }
             //Resetting form state once saved or updated
@@ -175,18 +177,15 @@ function SubmitQuestionModel(props) {
         setErrors(errors);
         return isValid;
     }
-    const getTopic = () => {
+    const getTopicId = () => {
         if (data.topic !== '' && data.topic !== undefined){
             let t=topics.filter(topic => {
-                if (topic._id === data.topic || topic.topicName === data.topic) {
-                    return topic.topicName;
+                if (topic.topicName === data.topic) {
+                    return topic._id;
                 }
-                return null;
-            })
-            return (<option value={data.topic} >{t[0] && t[0].topicName}</option>)
+            });
+            return t._id;
         }
-        else
-            return (<option  value="" ></option>)
     }
     return (
         <div className="Question-Model" >
@@ -223,8 +222,8 @@ function SubmitQuestionModel(props) {
                             helperText={errors.topic}
                             value={data.topic}
                         >
-                            {getTopic()}
-                            {topics.map(t => (<option value={t._id}>{t.topicName}</option>))}
+                            {data.topic === "" ?<option  value="" />:<option value={data.topic}>{data.topic}</option>}
+                            {topics.map(t => (<option value={t.topicName}>{t.topicName}</option>))}
                         </Select>
                     </FormControl>
                     <TextField className="MuiTextField-root"
@@ -277,8 +276,8 @@ function SubmitQuestionModel(props) {
                     />
                 </DialogContent>
                 <MuiDialogActions>
-                    <Button onClick={handleSubmit} variant="contained" color="primary">Submit</Button>
-                    <Button onClick={() => props.onClose()} variant="contained" color="primary">Cancel</Button>
+                    <Button onClick={handleSubmit} variant="outlined" color="primary">Submit</Button>
+                    <Button onClick={() => props.onClose()} variant="outlined" color="primary">Cancel</Button>
                 </MuiDialogActions>
             </Dialog>
         </div>

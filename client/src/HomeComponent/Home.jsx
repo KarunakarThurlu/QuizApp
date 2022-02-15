@@ -79,6 +79,13 @@ function NavBar(props) {
             Notifier.notify("You are Logged out  Successfully!.", Notifier.notificationType.SUCCESS);
         }
     }
+    const constructImage = (row) => {
+        if(row){
+            return `data:${row.contentType};base64,${ new Buffer.from(row.data).toString('base64')}`;
+        }else{
+            return "/user.png";
+        }
+    }
     return (
         <div className="home-container">
             <AddUserModel open={showAccountDetails} onClose={() => setShowAccountDetails(false)} role={role} editFormData={loggedInUserData} />
@@ -91,14 +98,14 @@ function NavBar(props) {
                 open={anchorEl}
                 onClose={handleClose}
             >
-                {/* <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleClose}>
                     <div onClick={dropDropDownItemClick} name="Profile" style={{ display: "flex" }}>
                         <PersonIcon />
                         <Typography >
                             Profile
                         </Typography>
                     </div>
-                </MenuItem> */}
+                </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <div onClick={dropDropDownItemClick} name="Account" style={{ display: "flex" }}>
                         <SettingsIcon style={{ paddingRight: "4px" }} />
@@ -133,7 +140,7 @@ function NavBar(props) {
                         Java Quiz Application
                     </Typography>
                     {loggedInUserData !== null && loggedInUserData.profilePicture !== undefined ?
-                     <img onClick={handleClick} src={loggedInUserData.profilePicture} title={loggedInUserData && loggedInUserData.email} alt="" />
+                     <img onClick={handleClick} src={constructImage(loggedInUserData.profilePicture)} title={loggedInUserData && loggedInUserData.email} alt="" />
                       : <AccountCircleSharpIcon  onClick={handleClick} />}
                 </Toolbar>
             </AppBar>

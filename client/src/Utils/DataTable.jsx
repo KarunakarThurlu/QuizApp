@@ -67,6 +67,7 @@ function DataTable(props) {
                     paging: true,
                     pageSize: 100,
                     emptyRowsWhenPaging: false,
+                    padding: 'dense',
 
                 }}
                 components={{

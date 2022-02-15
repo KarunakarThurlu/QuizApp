@@ -12,12 +12,14 @@ exports.getAllExamsDetails = async (request, response, next) => {
         if (isAdmin) {
             exams = await Exam.find({}).sort({ Date: -1 })
                 .populate("TestQuestions")
+                .populate("UserId", "firstName lastName email profilePicture")
                 .skip(pageNumber * pageSize)
                 .limit(pageSize);
             totalCount = await Exam.find().countDocuments();
         } else {
             exams = await Exam.find({ UserId: requestUser._id }).sort({ Date: -1 })
                 .populate("TestQuestions")
+                .populate("UserId", "firstName lastName email profilePicture")
                 .skip(pageNumber * pageSize)
                 .limit(pageSize);
             totalCount = await Exam.find({ UserId: requestUser._id }).countDocuments();

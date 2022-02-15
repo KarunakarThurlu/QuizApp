@@ -13,6 +13,8 @@ import UsersVisualization from './UsersVisualization';
 import config from "../ApiCalls/Config";
 import ChangePassword from "../HomeComponent/ChangePassword";
 import Spinner from '../Utils/Spinner';
+import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
+
 
 import "./manageusers.scss";
 import "../Utils/DataTable.scss"
@@ -57,14 +59,20 @@ function ManageUsers(props) {
             });
         })
     }
+    const constructImage = (row) => {
+        if(row && row.profilePicture){
+            return `data:${row.profilePicture.contentType};base64,${ new Buffer.from(row.profilePicture.data).toString('base64')}`;
+        }else{
+            return "/user.png";
+        }
+    }
 
     const columns =
         [
             { field: '_id', title: 'Id' },
             {
-                title: 'Profile', field: 'imageUrl',
-                render: rowData =>
-                    <img src={rowData.profilePicture !== null && rowData.profilePicture !== undefined ? rowData.profilePicture : "/user.png"} alt="" onClick={() => { setCurrentRowData(rowData); setOpenProfilePic(true) }} style={{ width: 40, borderRadius: '50%' }} />
+                title: 'profilePicture', field: 'imageUrl',
+                render: rowData => <img src={constructImage(rowData)} alt="" onClick={() => { setCurrentRowData(rowData); setOpenProfilePic(true) }} style={{ width: 35, borderRadius: '50%' }} />
             },
             { field: 'firstName', title: 'FirstName', },
             { field: 'lastName', title: 'lastName', },

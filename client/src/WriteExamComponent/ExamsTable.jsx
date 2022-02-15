@@ -12,6 +12,7 @@ import Notifier from '../Utils/Notifier';
 import DataTable from '../Utils/DataTable';
 import ViewProfilePic from '../ManageUsers/ViewProfilePic';
 import Spinner from '../Utils/Spinner';
+import ToolTip from "../Utils/ToolTip"
 
 import './writeexam.scss';
 
@@ -88,15 +89,22 @@ const ExamsTable = () => {
         setTestScore(row.TestScore);
     }
 
+    const constructImage = (row) => {
+        if(row.profilePicture){
+            return `data:${row.profilePicture.contentType};base64,${ new Buffer.from(row.profilePicture.data).toString('base64')}`;
+        }else{
+            return "/user.png";
+        }
+    }
     const columns =
         [
-            { field: '_id', title: 'Id' },
+            { field: '_id', title: 'Id',render: (params) => (<ToolTip key={params._id}  toolTipData={params._id} length={8} />),},
             {
                 title: 'profilePicture', field: 'imageUrl',
-                render: rowData =>
-                    <img src={rowData.profilePicture !== null && rowData.profilePicture !== undefined ? rowData.profilePicture : "/user.png"} alt="" onClick={() => { setCurrentRowData(rowData); setOpenProfilePic(true) }} style={{ width: 35, borderRadius: '50%' }} />
+                render: rowData => <img src={constructImage(rowData)} alt="User Profile" onClick={() => { setCurrentRowData(rowData); setOpenProfilePic(true) }} style={{ width: 35, borderRadius: '50%' }} />
             },
-            { field: 'Name', title: 'Name', },
+            { field: 'firstName', title: 'FirstName', },
+            { field: 'lastName', title: 'LastName', },
             { field: 'Email', title: 'Email', },
             { field: 'TopicName', title: 'TopicName', },
             {
@@ -115,6 +123,13 @@ const ExamsTable = () => {
 
         ]
 
+        exams.length >0 && exams.forEach(exam => {
+        exam["firstName"] = exam && exam.UserId.firstName;
+        exam["lastName"] = exam && exam.UserId.lastName;
+        exam["email"] =  exam && exam.UserId.email;
+        exam["profilePicture"] = exam && exam.UserId.profilePicture;
+        
+    });
     const rows = exams;
     const TableData = { columns, rows, page, rowsPerPage, totalCount, toolTip: "Add Question", title: "Exams Data", showActions: false }
     return (

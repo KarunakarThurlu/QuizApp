@@ -130,10 +130,10 @@ function ChangePassword(props) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleSubmit} color="primary" variant="contained">
+                    <Button onClick={handleSubmit} color="primary" variant="outlined">
                         Submit
                     </Button>
-                    <Button onClick={props.onClose} color="primary" autoFocus variant="contained">
+                    <Button onClick={props.onClose} color="primary" autoFocus variant="outlined">
                         Cancel
                     </Button>
                 </DialogActions>

@@ -25,9 +25,11 @@ exports.saveQuestion = async (request, response, next) => {
 
 exports.deleteQuestionById = async (request, response, next) => {
     try {
-        const question = await Question.findById({ _id: {$eq : request.query.id  } });
-        if (question)
-            await Question.findByIdAndDelete({ _id: {$eq : question.id  } }, (errror, doc, res) => response.json({ data: {}, statusCode: 200, message: "Question deleted" }));
+        const question = await Question.findOne({ _id: {$eq : request.query.id  } });
+        if (question){
+            await question.remove();
+            return response.json({ data: {}, statusCode: 200, message: "Question Deleted" });
+        }
         else
             return response.json({ data: {}, statusCode: 400, message: "Question Not Found" });
     } catch (error) {
@@ -45,10 +47,10 @@ exports.updateQuestion = async (request, response, next) => {
                 questionFromDB[keys[i]] = request.body[v];
             });
             questionFromDB["updatedOn"] = Date.now();
-            const updatedQuestion = await Question.findByIdAndUpdate({ _id: { $eq : request.body._id } }, questionFromDB, (error, doc, res) => { });
+            const updatedQuestion = await questionFromDB.save();
             return response.json({ data: updatedQuestion, statusCode: 200, message: "Question updated" });
         } else {
-            return response.json({ data: {}, statusCode: 400, message: "nottttttttt found" });
+            return response.json({ data: {}, statusCode: 400, message: "Not found" });
         }
     } catch (error) {
         return response.json({ data: {}, statusCode: 500, message: error.message });
@@ -71,7 +73,7 @@ exports.getAllQuestions = async (request, response, next) => {
         const pageNumber = parseInt(request.query.pageNumber) - 1 || 0;
         const pageSize = parseInt(request.query.pageSize) || 5;
         //sort by updatedOn
-        const totalCount = await Question.find({}).count();
+        const totalCount = await Question.countDocuments();
         const questions = await Question.find({}).sort({ updatedOn: -1 })
             .populate({ path: "creator", select: ["name", "email"] })
             .populate({ path: "topic", select: "topicName" })

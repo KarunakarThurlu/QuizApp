@@ -1,27 +1,18 @@
 
 import React, { useContext, useEffect, useState } from 'react'
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
 import HelperUtils from '../Utils/HelperUtils';
 import Home from '../HomeComponent/Home';
 import SubmitQuestionModel from "./SubmitQuestionModel";
 import ChangeQuestionStatusModel from "./ChangeQuestionStatusModel";
-import Tooltip from '@material-ui/core/Tooltip';
 import WarningPopupModel from "../Utils/WarningPopUpModel"
 import DataTable from "../Utils/DataTable";
 import "./AddQuestions.scss";
 import QuestionsContext from '../Context/QuestionsContext/QuestionsContext';
 import CommonConstants from '../Utils/CommonConstants';
 import QuestionsVisualization from './QuestionsVisualization';
+import ToolTipUtil from "../Utils/ToolTip";
 
-const LightTooltip = withStyles((theme) => ({
-    tooltip: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-        boxShadow: theme.shadows[1],
-        fontSize: 14,
-    },
-}))(Tooltip);
 
 function SubmitQuestion(props) {
 
@@ -55,54 +46,34 @@ function SubmitQuestion(props) {
     const columns =
         [
             {
-                field: 'questionId', title: 'Id',
-                render: (params) => (
-                    <LightTooltip key={params.name._id} title={params._id} arrow >
-                        <span className="table-cell-trucate">{params._id.substr(0, 7)}</span>
-                    </LightTooltip>
-                ),
+                field: '_id', title: 'Id',
+                render: (params) => (<ToolTipUtil key={params.name._id} toolTipData={params._id} length={8}/>),
             },
             {
                 field: 'name', title: 'Question Name',
-                render: (params) => (
-                    <LightTooltip key={params.name._id} title={params.name} arrow >
-                        <span className="table-cell-trucate">{params.name.substr(0, 17)}...</span>
-                    </LightTooltip>
-                ),
+                render: (params) => ( <ToolTipUtil key={params.name._id} toolTipData={params.name} length={50} /> ),
             },
-            { field: 'creator_name', title: 'Creator', },
-            { field: 'topic_name', title: 'Topic', },
+            {   field: 'creator_name', title: 'Creator', 
+                render: (params) => ( <ToolTipUtil key={params.creator_name} toolTipData={params.creator_name} length={20} /> ),
+            },
+            {   field: 'topic_name', title: 'Topic',
+                render: (params) => ( <ToolTipUtil key={params.topic_name} toolTipData={params.topic_name} length={10} /> ),
+            },
             {
                 field: "optionA", title: "optionA",
-                render: (params) => (
-                    <LightTooltip key={params.name._id} title={params.optionA} arrow >
-                        <span className="table-cell-trucate">{params.optionA.substr(0, 17)}{params.optionA.length>16?"...":""}</span>
-                    </LightTooltip>
-                ),
+                render: (params) => ( <ToolTipUtil key={params.name._id} toolTipData={params.optionA} length={17} />),
             },
             {
                 field: "optionB", title: "optionB",
-                render: (params) => (
-                    <LightTooltip key={params.name._id} title={params.optionB} arrow >
-                        <span className="table-cell-trucate">{params.optionB.substr(0, 17)}{params.optionB.length>16?"...":""}</span>
-                    </LightTooltip>
-                ),
+                render: (params) => (<ToolTipUtil key={params.name._id} toolTipData={params.optionB} length={17} />),
             },
             {
                 field: "optionC", title: "optionC", 
-                render: (params) => (
-                    <LightTooltip key={params.name._id} title={params.optionC} arrow >
-                        <span className="table-cell-trucate">{params.optionC.substr(0, 17)}{params.optionC.length>16?"...":""}</span>
-                    </LightTooltip>
-                ),
+                render: (params) => (<ToolTipUtil key={params.name._id} toolTipData={params.optionC} length={17}/>),
             },
             {
                 field: "optionD", title: "optionD",
-                render: (params) => (
-                    <LightTooltip key={params.name._id} title={params.optionD} arrow >
-                        <span className="table-cell-trucate">{params.optionD.substr(0, 17)}{params.optionD.length>16?"...":""}</span>
-                    </LightTooltip>
-                ),
+                render: (params) => ( <ToolTipUtil key={params.name._id} toolTipData={params.optionD} length={17} />),
             },
             {
                 field: 'status', title: 'Status', align: 'center',

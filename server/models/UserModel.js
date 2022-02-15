@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const User = new mongoose.Schema({
     firstName: { type: String, required: true, trim: true },
     lastName: { type: String, required: true, trim: true },
-    profilePicture:{ type: String,trim: true },
+    profilePicture:{ data : Buffer, contentType : String },
     phoneNumber: { type: Number, required: true, unique: true },
     createdOn: { type: Date, required: true, default: Date.now },
     updatedOn: { type: Date, required: true, default: Date.now },
