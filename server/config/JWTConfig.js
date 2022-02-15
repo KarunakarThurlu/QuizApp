@@ -10,7 +10,7 @@ exports.verify = async (request, response, next) => {
         if (bearerToken === undefined)
             return response.json({ "data": {}, "statusCode": "401", "message": "Token not present" });
         const token = bearerToken.split(" ")[1];
-        jwt.verify(token, JWTUtil.JWTCONSTANTS.CLIENT_SECRET);
+        jwt.verify(token, process.env.CLIENT_SECRET);
         next();
     } catch (error) {
         return response.json({ "data": {}, "statusCode": "500", "message": error.message });

@@ -5,21 +5,13 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import Tooltip from '@material-ui/core/Tooltip';
 import QuestionsApiCall from '../ApiCalls/QuestionsApiCall';
 import DataTable from "../Utils/DataTable";
 import HelperUtils from '../Utils/HelperUtils';
 import Spinner from '../Utils/Spinner';
+import TooltipUtil from "../Utils/ToolTip";
 import "./dashboard.scss"
 
-const LightTooltip = withStyles((theme) => ({
-    tooltip: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-        boxShadow: theme.shadows[1],
-        fontSize: 14,
-    },
-}))(Tooltip);
 
 
 function UserQuestionsView(props) {
@@ -52,54 +44,23 @@ function UserQuestionsView(props) {
         [
             {
                 field: 'name', title: 'Question Name',
-                render: (params) => (
-                    <LightTooltip key={params.name._id} title={params.name} arrow >
-                        <span className="table-cell-trucate">{params.name.substr(0, 17)}...</span>
-                    </LightTooltip>
-                ),
+                render: (params) => (<TooltipUtil key={params.name._id} toolTipData={params.name} length={40} />),
             },
             {
                 field: "optionA", title: "optionA",
-                cellStyle: {
-                    whiteSpace: 'nowrap'
-                },
-                render: (params) => (
-                    <LightTooltip key={params.optionA._id} title={params.optionA} arrow >
-                        <span className="table-cell-trucate">{params.optionA.substr(0, 17)}{params.optionA.length>16?"...":""}</span>
-                    </LightTooltip>
-                ),
+                render: (params) => ( <TooltipUtil key={params.optionA._id} toolTipData={params.optionA} length={17} /> ),
             },
             {
                 field: "optionB", title: "optionB",
-                cellStyle: {
-                    whiteSpace: 'nowrap'
-                },
-                render: (params) => (
-                    <LightTooltip key={params.optionB._id} title={params.optionB} arrow >
-                        <span className="table-cell-trucate">{params.optionB.substr(0, 17)}{params.optionB.length>16?"...":""}</span>
-                    </LightTooltip>
-                ),
+                render: (params) => ( <TooltipUtil key={params.optionB._id} toolTipData={params.optionB} length={17} /> ),
             },
             {
-                field: "optionC", title: "optionC", cellStyle: {
-                    whiteSpace: 'nowrap'
-                },
-                render: (params) => (
-                    <LightTooltip key={params.optionC._id} title={params.optionC} arrow >
-                        <span className="table-cell-trucate">{params.optionC.substr(0, 17)}{params.optionC.length>16?"...":""}</span>
-                    </LightTooltip>
-                ),
+                field: "optionC", title: "optionC", 
+                render: (params) => ( <TooltipUtil key={params.optionC._id} toolTipData={params.optionC} length={17} />),
             },
             {
                 field: "optionD", title: "optionD",
-                cellStyle: {
-                    whiteSpace: 'nowrap'
-                },
-                render: (params) => (
-                    <LightTooltip key={params.optionD._id} title={params.optionD} arrow >
-                        <span className="table-cell-trucate">{params.optionD.substr(0, 17)}{params.optionD.length>16?"...":""}</span>
-                    </LightTooltip>
-                ),
+                render: (params) => (<TooltipUtil key={params.optionD._id} toolTipData={params.optionD} length={17} />),
             },
             { field: 'createdOn', title: 'Created Date', },
         ];
@@ -110,7 +71,7 @@ function UserQuestionsView(props) {
             },
             {
                 field: 'rejectedReason', title: 'RejectedReason', align: 'center',
-                render: (params) => (<span variant="contained" style={{ color : "#d32f2f", width: "10em" }} >{params.rejectedReason} </span>)
+                render: (params) => (<span  style={{ color : "#d32f2f" }} ><TooltipUtil toolTipData= {params.rejectedReason} length={15}/></span>)
             }
             );
         }

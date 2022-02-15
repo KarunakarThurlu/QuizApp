@@ -5,6 +5,7 @@ const path = require('path');
 const express = require("express");
 const morgan = require("morgan");
 const cors = require('cors');
+const ratelimit = require('express-rate-limit');
 
 const userRouter = require("./routers/UserRouter");
 const companyRouter = require("./routers/CompanyRouter");
@@ -35,7 +36,7 @@ const server = app.listen(PORT, () => {
 });
 
 
-mongoose.connect(mongoDBURL, { useCreateIndex: true, useFindAndModify: false, useNewUrlParser: true, useUnifiedTopology: true }).then((req, res) => {
+mongoose.connect(mongoDBURL, { useNewUrlParser: true}).then((req, res) => {
     console.log("Mongo DB Connected");
 }).catch(error => {
     console.log(error);
@@ -66,6 +67,16 @@ if (process.env.NODE_ENV === 'production') {
 app.use((request, response) => {
     response.json({ statusCode: 404, message: "Not Found" })
 });
+
+
+const limiter = ratelimit({
+    windowMs: 1*60*1000, // 1 minute
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: "Too many requests from this IP, please try again after an hour",
+
+})
+app.use(limiter); 
+
 
 app.use((error, request, response, next) => {
     response.json({ statusCode: error.status || 500, message: error.message })

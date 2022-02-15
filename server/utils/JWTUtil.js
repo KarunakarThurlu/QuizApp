@@ -1,7 +1,5 @@
 
-
 exports.JWTCONSTANTS = {
-    CLIENT_SECRET: "foo",
-    ISSUER: "http://foo.com",
+    ISSUER: "https://http://java2quiz.herokuapp.com",
     TOKEN_EXPIRES_IN: "1d"
 }

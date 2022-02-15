@@ -105,7 +105,7 @@ const ExamsTable = () => {
             },
             { field: 'firstName', title: 'FirstName', },
             { field: 'lastName', title: 'LastName', },
-            { field: 'Email', title: 'Email', },
+            { field: 'email', title: 'Email', },
             { field: 'TopicName', title: 'TopicName', },
             {
                 field: 'Date', title: 'Date',

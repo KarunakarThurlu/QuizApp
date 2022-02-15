@@ -23,7 +23,7 @@ exports.login = async (request, response, next) => {
             return response.json({ data: request.body, statusCode: 400, "message": "Invalid UserName Or Password!" });
 
         user.password = undefined;
-        const token = jwt.sign({ sub: user._id }, JWTUtil.JWTCONSTANTS.CLIENT_SECRET, { expiresIn: JWTUtil.JWTCONSTANTS.TOKEN_EXPIRES_IN, issuer: JWTUtil.JWTCONSTANTS.ISSUER });
+        const token = jwt.sign({ sub: user._id }, process.env.CLIENT_SECRET, { expiresIn: JWTUtil.JWTCONSTANTS.TOKEN_EXPIRES_IN, issuer: JWTUtil.JWTCONSTANTS.ISSUER });
         return response.json({ data: user, statusCode: 200, message: "Login Success!", token: token });
     } catch (error) {
         console.error("########################### " + new Date().toISOString() + " While Login   ############################", error);
@@ -44,7 +44,8 @@ exports.uploadProfilePicture = async (request, response, next) => {
                                        }
  
             await userFromDB.save();
-            fs.unlinkSync(request.file.path);
+            let filePath = path.join(__dirname, '../../uploads/' + request.file.filename); 
+            fs.unlinkSync(filePath);
             let updatedUser = await User.findOne({ _id: requestUser._id.toString() }, { password: false }).populate('roles');
             CacheService.set(updatedUser._id.toString(), updatedUser);
             return response.json({ data: updatedUser, statusCode: 200, message: "Profile Picture Uploaded Successfully!" });
