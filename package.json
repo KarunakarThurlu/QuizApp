@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/karunakarjava/react-node-app.git"
+    "url": "git+https://github.com/KarunakarThurlu/QuizApp.git"
   },
   "author": "karunakarthurlujava@gmail.com",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/karunakarjava/react-node-app/issues"
+    "url": "https://github.com/KarunakarThurlu/QuizApp/issues"
   },
-  "homepage": "https://github.com/karunakarjava/react-node-app#readme",
+  "homepage": "https://github.com/KarunakarThurlu/QuizApp",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",

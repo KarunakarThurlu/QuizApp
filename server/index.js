@@ -57,7 +57,6 @@ app.use('/uploads', express.static('uploads'));
 
 //Render React App from ../client/build
 if (process.env.NODE_ENV === 'production') {
-
     app.use(express.static(path.join(__dirname, '../client/build')));
     app.get('/*', (req, res) => {
         res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
@@ -76,6 +75,11 @@ const limiter = ratelimit({
 
 })
 app.use(limiter); 
+app.get('/:path', function(req, res) {
+    let filepath = req.params.path;
+    if (isValidPath(filepath))
+      res.sendFile(filepath);
+  });
 
 
 app.use((error, request, response, next) => {

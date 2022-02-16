@@ -143,11 +143,11 @@ function WriteExam(props) {
     const validateForm = () => {
         let isValid = true;
         let errorsobj = {topic:'',questionsrange:''};
-        if (topicName === '') {
+        if (topicName === '' || topicName === undefined) {
             errorsobj["topic"] = "Please Select Topic";
             isValid = false;
         }
-        if (selectedRange === '') {
+        if (selectedRange === '' || selectedRange === undefined) {
             errorsobj["questionsrange"] = "Please Select Questions Range";
             isValid = false;
         }
@@ -287,7 +287,7 @@ function WriteExam(props) {
                         </FormControl>
                         
                         <br /><br /> <br />
-                        <Button variant="contained" color='primary' onClick={handleStartExam}>Start</Button>
+                        <Button variant="outlined" color='primary' onClick={handleStartExam}>Start</Button>
                         </div>
                     </Grid>
                 </Grid>
