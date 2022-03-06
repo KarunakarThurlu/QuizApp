@@ -74,12 +74,8 @@ const limiter = ratelimit({
     message: "Too many requests from this IP, please try again after an hour",
 
 })
+
 app.use(limiter); 
-app.get('/:path', function(req, res) {
-    let filepath = req.params.path;
-    if (isValidPath(filepath))
-      res.sendFile(filepath);
-  });
 
 
 app.use((error, request, response, next) => {
