@@ -31,6 +31,12 @@ const TopicsReducer = (state, action) => {
                 totalCount: action.payload.totalCount
             }
         }
+        case TopicActions.TOPIC_NAMES: {
+            return {
+                ...state,
+                topicNames: action.payload
+            }
+        }
         default:
             return state;
 

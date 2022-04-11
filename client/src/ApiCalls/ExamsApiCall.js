@@ -6,7 +6,7 @@ const ExamsApi = {
         const token = await GetAuthToken();
         return  axios.get(`exams/getallexamsDetails?pageNumber=${pageNumber}&pageSize=${pageSize}`, {
             headers: {
-                Authorization: `Bearer ` + token,
+                Authorization: `Bearer ${token}`,
             },
         });
     },
@@ -14,7 +14,7 @@ const ExamsApi = {
         const token = await GetAuthToken();
         return axios.delete(`exams/deleteexam?id=${id}`, {
             headers: {
-                Authorization: `Bearer ` + token,
+                Authorization: `Bearer ${token}`,
             },
         });
     }

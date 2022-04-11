@@ -70,6 +70,15 @@ const UsersApiCalls = {
         });
     },
 
+    getUsersBySearchKey: async (searchKey) => {
+        const token = await GetAuthToken();
+        return  axios.get(`/user/getusersbysearchkey?searchKey=${searchKey}`, {
+            headers: {
+                Authorization: `Bearer ` + token,
+            },
+        });
+    }
+
 }
 
 export default UsersApiCalls

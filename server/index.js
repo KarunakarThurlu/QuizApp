@@ -5,7 +5,7 @@ const path = require('path');
 const express = require("express");
 const morgan = require("morgan");
 const cors = require('cors');
-const ratelimit = require('express-rate-limit');
+const Ratelimit = require('express-rate-limit');
 
 const userRouter = require("./routers/UserRouter");
 const companyRouter = require("./routers/CompanyRouter");
@@ -46,6 +46,14 @@ mongoose.connect(mongoDBURL, { useNewUrlParser: true}).then((req, res) => {
 app.use(morgan('dev'));
 app.use(express.json());
 
+//limiting requests
+const limiter = Ratelimit({
+    windowMs: 1*60*1000, // 1 minute
+    max: 15, // limit each IP to 100 requests per windowMs
+    message: "Too many requests from this IP, please try again after an hour",
+
+})
+app.use(limiter); 
 
 //Routers configuration
 app.use("/user", userRouter);
@@ -55,6 +63,7 @@ app.use("/question", questionRouter);
 app.use("/exams", examsRouter);
 app.use('/uploads', express.static('uploads'));
 
+
 //Render React App from ../client/build
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/build')));
@@ -62,25 +71,11 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
     });
 }
+
 //Error Handling
 app.use((request, response) => {
     response.json({ statusCode: 404, message: "Not Found" })
 });
-
-
-const limiter = ratelimit({
-    windowMs: 1*60*1000, // 1 minute
-    max: 100, // limit each IP to 100 requests per windowMs
-    message: "Too many requests from this IP, please try again after an hour",
-
-})
-app.use(limiter); 
-app.get('/:path', function(req, res) {
-    let filepath = req.params.path;
-    if (isValidPath(filepath))
-      res.sendFile(filepath);
-  });
-
 
 app.use((error, request, response, next) => {
     response.json({ statusCode: error.status || 500, message: error.message })

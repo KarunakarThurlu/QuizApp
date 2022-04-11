@@ -11,9 +11,17 @@ const QuestionsApiCall = {
             },
         });
     },
-    getAllQuestions: async (pageNumber,pageSize) => {
+    getAllQuestions: async (pageNumber,pageSize,filters) => {
         const token = await GetAuthToken();
-        return  axios.get(`/question/getallquestions?pageNumber=${pageNumber}&pageSize=${pageSize}`, {
+        let url='';
+        const keys=Object.keys(filters);
+        for(let i=0;i<3;i++){
+            const key= keys[i];
+            const val=filters[key];
+            if(val.length>0 && val!==undefined)
+                url=url+"&"+key+"="+val;
+        }
+        return  axios.get(`/question/getallquestions?pageNumber=${pageNumber}&pageSize=${pageSize}${url}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -99,9 +107,10 @@ const QuestionsApiCall = {
             },
         });
     },
-    userQuestionsViewInDashboard: async (pageNumber,pageSize,status) => {
+    userQuestionsViewInDashboard: async (pageNumber,pageSize,status,filtersData) => {
         const token = await GetAuthToken();
-        return  axios.get(`/question/userquestionsviewindashboard?pageNumber=${pageNumber}&pageSize=${pageSize}&status=${status}`, {
+        const topicId=filtersData.topicName;
+        return  axios.get(`/question/userquestionsviewindashboard?pageNumber=${pageNumber}&pageSize=${pageSize}&status=${status}&topicId=${topicId}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
