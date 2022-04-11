@@ -71,22 +71,24 @@
 
 .userQuestionsView {
   .MuiDialog-container {
-    padding: 10px;
+     margin: 10px;
     .MuiDialog-paperWidthSm {
-      padding: 10px;
+      margin: 0px;
       max-width: 80em;
       width: 85em;
       .MuiDialogTitle-root {
+          padding: 0px;
+          margin: 9px;
         .MuiTypography-h6 {
           text-align: right;
-          padding: 0px;
         }
       }
       .MuiDialogContent-root{
         .MuiPaper-root{
+          margin-top: 0px;
           .MuiTable-root{
             .MuiTableFooter-root{
-              display: flex;
+                display: flex;
                 flex-grow: 1;
               .MuiTableRow-root{
                 .custompagination{

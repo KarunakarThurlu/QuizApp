@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useContext } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -10,6 +10,10 @@ import DataTable from "../Utils/DataTable";
 import HelperUtils from '../Utils/HelperUtils';
 import Spinner from '../Utils/Spinner';
 import TooltipUtil from "../Utils/ToolTip";
+import Autocomplete from '@material-ui/lab/Autocomplete'
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import TopicsContext from '../Context/TopicContext/TopicContext';
 import "./dashboard.scss"
 
 
@@ -21,10 +25,12 @@ function UserQuestionsView(props) {
     const [totalCount,setTotalCount]=useState(0);
     const [questions, setQuestions] = useState([]);
     const [spinner, setSpinner] = useState(false);
-
+    const [filters, setFilters] = useState({  topicName: [] });        //For Label Display
+    const [filtersData, setFiltersData] = useState({ topicName: '' });//For Filter Data
+    const { getTopicNames, Topics } = useContext(TopicsContext);
     useEffect(() => {
         setSpinner(true);
-        QuestionsApiCall.userQuestionsViewInDashboard(page,rowsPerPage,props.status)
+        QuestionsApiCall.userQuestionsViewInDashboard(page,rowsPerPage,props.status,filtersData)
         .then(res=>{
             setSpinner(false);
             if(res.data.statusCode===200){
@@ -38,39 +44,72 @@ function UserQuestionsView(props) {
         }).finally(()=>{
             setSpinner(false);
         })
-    }, [page, rowsPerPage,props.status]);
+        
+    }, [page, rowsPerPage, filtersData, props.status]);
+
+   useEffect(()=>{
+    getTopicNames();
+   },[]);
+    const topics = Topics.topicNames
+    let tns = []
+    if (topics !== undefined && topics.length > 0) {
+        const t = JSON.parse(topics)
+        t.map(t => tns.push({ topicName: t.topicName, id: t._id }))
+    }
     
    const columns =
         [
             {
-                field: 'name', title: 'Question Name',
+                field: 'topic_name', title: 'Topic', filtering: true,
+                filterComponent: () => (<Autocomplete
+                    style={{ width: '15em' }}
+                    multiple
+                    size='small'
+                    id="topic"
+                    options={tns}
+                    getOptionLabel={(option) => option.topicName}
+                    onChange={(event) => {
+                        const topicName = event.target.textContent;
+                        const topicId = tns.filter(t => t.topicName === topicName)
+                        const obj = { ...filters, topicName: topicName !== "" ? [{ topicName: topicName }] : [] }
+                        const filteredObject = { ...filtersData, topicName: topicName !== "" ? topicId[0].id : '' }
+                        setFilters(obj);
+                        setFiltersData(filteredObject);
+                    }}
+                    value={filters.topicName}
+                    renderInput={(inputparams) => (<TextField {...inputparams} variant="standard" style={{ width: '16em' }} />)}
+                />),
+                render: (params) => (<TooltipUtil key={params.topic_name} toolTipData={params.topic_name} length={15} />),
+            },
+            {
+                field: 'name', title: 'Question Name',filtering: false,
                 render: (params) => (<TooltipUtil key={params.name._id} toolTipData={params.name} length={40} />),
             },
             {
-                field: "optionA", title: "optionA",
+                field: "optionA", title: "optionA",filtering: false,
                 render: (params) => ( <TooltipUtil key={params.optionA._id} toolTipData={params.optionA} length={17} /> ),
             },
             {
-                field: "optionB", title: "optionB",
+                field: "optionB", title: "optionB",filtering: false,
                 render: (params) => ( <TooltipUtil key={params.optionB._id} toolTipData={params.optionB} length={17} /> ),
             },
             {
-                field: "optionC", title: "optionC", 
+                field: "optionC", title: "optionC", filtering: false,
                 render: (params) => ( <TooltipUtil key={params.optionC._id} toolTipData={params.optionC} length={17} />),
             },
             {
-                field: "optionD", title: "optionD",
+                field: "optionD", title: "optionD",filtering: false,
                 render: (params) => (<TooltipUtil key={params.optionD._id} toolTipData={params.optionD} length={17} />),
             },
-            { field: 'createdOn', title: 'Created Date', },
+            { field: 'createdOn', title: 'Created Date',filtering: false, },
         ];
         if(props.status==='REJECTED'){//rejectedReason
             columns.push({
-                field: 'status', title: 'Status', align: 'center',
+                field: 'status', title: 'Status', align: 'center',filtering: false,
                 render: (params) => (<span variant="contained" style={{ color : "#d32f2f", width: "10em" }} >{params.status} </span>)
             },
             {
-                field: 'rejectedReason', title: 'RejectedReason', align: 'center',
+                field: 'rejectedReason', title: 'RejectedReason', align: 'center',filtering: false,
                 render: (params) => (<span  style={{ color : "#d32f2f" }} ><TooltipUtil toolTipData= {params.rejectedReason} length={15}/></span>)
             }
             );
@@ -84,7 +123,7 @@ function UserQuestionsView(props) {
                 q.updatedOn = HelperUtils.formateDate(q.updatedOn);
             });
         }
-        const TableData = { columns, rows, page, rowsPerPage,title:"Questions Data" ,showGroupByHeader:false, totalCount,showActions:false}
+        const TableData = { columns, rows, page, rowsPerPage,title:"Questions Data" ,showGroupByHeader:false,filtering: true, totalCount,showActions:false}
     return (
         <div>
             {spinner && <Spinner open={spinner} />}

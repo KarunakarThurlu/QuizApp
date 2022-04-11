@@ -81,9 +81,9 @@ const QuestionsState = (props) => {
             });
     }
 
-    const getAllQuestions = async (pageNumber, pageSize) => {
+    const getAllQuestions = async (pageNumber, pageSize,filters) => {
         setSpinner(true);
-        await QuestionApiCall.getAllQuestions(pageNumber, pageSize)
+        await QuestionApiCall.getAllQuestions(pageNumber, pageSize, filters)
             .then(response => {
                 setSpinner(false);
                 dispatch({

@@ -45,4 +45,5 @@ router.put("/changepassword",JWTConfig.verify,userController.changePassword)
 router.delete("/deleteuser", JWTConfig.verify, [JWTConfig.SuperAdmin], userController.deleteUserById);
 router.post("/uploadprofilepic",JWTConfig.verify, upload.single('image'), userController.uploadProfilePicture);
 router.get("/getusersdataforvisualization",JWTConfig.verify,[JWTConfig.AdminOrSuperAdmin], userController.getUsersDataForVisualization);
+router.get("/getUsersBySearchKey",JWTConfig.verify, [JWTConfig.AdminOrSuperAdmin], userController.getUsersBySearchKey);
 module.exports = router;

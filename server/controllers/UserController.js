@@ -264,13 +264,27 @@ exports.getUsersDataForVisualizationData = async () => {
 }
 
 exports.getUsersDataForVisualization = async (request, response, next) => {
-
     try {
         if (CacheService.has(CommonConstants.KEYS.USERS_VISULN))
             return response.json({ data: CacheService.get(CommonConstants.KEYS.USERS_VISULN), statusCode: 200, message: "OK" });
         const res = await this.getUsersDataForVisualizationData();
         CacheService.set(CommonConstants.KEYS.USERS_VISULN, res);
         return response.json({ data: res, statusCode: 200, message: "OK" });
+    } catch (error) {
+        return response.json({ data: {}, statusCode: 500, message: error.message });
+    }
+}
+
+exports.getUsersBySearchKey = async (request, response) => {
+    try {
+        const key = request.query.searchKey;
+        if(key === undefined || key === '')
+            return response.json({ data: {}, statusCode: 400, message: "search key is required" });
+        let users = await User.find({ email: { $regex: key, $options: 'i' } }).select("email _id");
+        if(users)
+            return response.json({ data: users, statusCode: 200, message: "OK" });
+        else
+            return response.json({ data: {}, statusCode: 400, message: "not found" });
     } catch (error) {
         return response.json({ data: {}, statusCode: 500, message: error.message });
     }

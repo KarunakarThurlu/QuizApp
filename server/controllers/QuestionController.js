@@ -72,9 +72,22 @@ exports.getAllQuestions = async (request, response, next) => {
     try {
         const pageNumber = parseInt(request.query.pageNumber) - 1 || 0;
         const pageSize = parseInt(request.query.pageSize) || 5;
+        const status = request.query.status;
+        const topic  = request.query.topicName;
+        const creator = request.query.creator;
+        const filter = {};
+        // add status,topic,creator to filter if !==undefined 
+        if (status !== undefined ) 
+            filter["status"] = status;
+        if (topic !== undefined ) 
+            filter["topic"] = topic;
+        if (creator !== undefined ) 
+            filter["creator"] = creator;
+
         //sort by updatedOn
-        const totalCount = await Question.countDocuments();
-        const questions = await Question.find({}).sort({ updatedOn: -1 })
+        const totalCount = await Question.find(filter).count();
+        console.log(filter);
+        const questions = await Question.find(filter).sort({ updatedOn: -1 })
             .populate({ path: "creator", select: ["name", "email"] })
             .populate({ path: "topic", select: "topicName" })
             .skip(pageNumber * pageSize).limit(pageSize);
@@ -156,14 +169,23 @@ exports.userQuestionsViewInDashboard = async (request, response, next) => {
         const status = request.query.status;
         const pageNumber = parseInt(request.query.pageNumber) - 1 || 0;
         const pageSize = parseInt(request.query.pageSize) || 5;
+        const topicId  = request.query.topicId;
         let questions;
         let totalCount;
         if (status === "TOTAL") {
-            questions = await Question.find({ creator: { $eq :user._id } }).skip(parseInt(pageNumber)).limit(parseInt(pageSize));
-            totalCount = await Question.find({ creator:{ $eq :user._id } }).count();
+             let filter = { creator: { $eq :user._id } }
+             if(topicId!==undefined && topicId!==null  && topicId!==''){
+                 filter = { ...filter ,topic:{$eq :topicId} }
+             }
+            questions = await Question.find(filter).populate({ path: "topic", select: ["topicName", "_id"] }).skip(parseInt(pageNumber)).limit(parseInt(pageSize));
+            totalCount = await Question.find(filter).populate({ path: "topic", select: ["topicName", "_id"] }).count();
         } else {
-            questions = await Question.find({ creator: {$eq : user._id }, status: {$eq : status } }).skip(parseInt(pageNumber)).limit(parseInt(pageSize));
-            totalCount = await Question.find({ creator: {$eq : user._id }, status: { $eq : status } }).count();
+            let filter = { creator: {$eq : user._id }, status: {$eq : status } }
+            if(topicId!==undefined && topicId!==null  && topicId!==''){
+                filter = { ...filter ,topic:{$eq :topicId} }
+            }
+            questions = await Question.find(filter).populate({ path: "topic", select: ["topicName", "_id"] }).skip(parseInt(pageNumber)).limit(parseInt(pageSize));
+            totalCount = await Question.find(filter).populate({ path: "topic", select: ["topicName", "_id"] }).count();
         }
         return response.json({ data: questions, totalCount: totalCount, statusCode: 200, message: "OK" });
     } catch (error) {
