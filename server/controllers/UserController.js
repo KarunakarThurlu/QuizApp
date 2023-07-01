@@ -15,7 +15,7 @@ const path = require('path');
 //login
 exports.login = async (request, response, next) => {
     try {
-        let user = await User.findOne({ email: { $eq : request.body.email } }).populate("roles");
+        let user = await User.findOne({ email: { $eq: request.body.email } }).populate("roles");
         if (user === null)
             return response.json({ data: request.body, statusCode: 400, "message": request.body.email + " is not Found in our database. Please signup!." });
         let validpassword = await bcrypt.compare(request.body.password, user.password);
@@ -36,15 +36,15 @@ exports.login = async (request, response, next) => {
 exports.uploadProfilePicture = async (request, response, next) => {
     const requestUser = await GetUserFromToken.getUserDetailsFromToken(request);
     try {
-        let userFromDB = await User.findOne({ _id: requestUser._id.toString()});
-        if (userFromDB) {            
+        let userFromDB = await User.findOne({ _id: requestUser._id.toString() });
+        if (userFromDB) {
             userFromDB.profilePicture = {
-                                         data :fs.readFileSync(request.file.path),
-                                         contentType: request.file.mimetype,
-                                       }
- 
+                data: fs.readFileSync(request.file.path),
+                contentType: request.file.mimetype,
+            }
+
             await userFromDB.save();
-            let filePath = path.join(__dirname, '../../uploads/' + request.file.filename); 
+            let filePath = path.join(__dirname, '../../uploads/' + request.file.filename);
             fs.unlinkSync(filePath);
             let updatedUser = await User.findOne({ _id: requestUser._id.toString() }, { password: false }).populate('roles');
             CacheService.set(updatedUser._id.toString(), updatedUser);
@@ -61,21 +61,22 @@ exports.uploadProfilePicture = async (request, response, next) => {
 
 exports.saveUser = async (request, response, next) => {
     try {
-        let userExists = await User.findOne({ email:{ $eq: request.body.email} });
+        console.log("Sign user : ${request.body}", request.body)
+        let userExists = await User.findOne({ email: { $eq: request.body.email } });
         if (userExists)
             return response.json({ data: request.body, statusCode: 400, message: `Email ${request.body.email} Already Exists` });
         let roles = [];
         if (request.body.roles.length !== 0) {
             let rolesFromUI = request.body.roles;
             for (let role of rolesFromUI) {
-                let roleExisted = await Role.findOne({ role_name: { $eq : role.role_name } });
-                if(roleExisted && roleExisted.role_name === 'ADMIN'){
+                let roleExisted = await Role.findOne({ role_name: { $eq: role.role_name } });
+                if (roleExisted && roleExisted.role_name === 'ADMIN') {
                     const authorization = request.headers["authorization"];
-                    if(authorization === undefined || authorization === null || authorization === ''){
+                    if (authorization === undefined || authorization === null || authorization === '') {
                         return response.json({ data: {}, statusCode: 400, message: "You are not authorized to perform this action!" });
                     }
                     const requestUser = await GetUserFromToken.getUserDetailsFromToken(request);
-                    if(requestUser.roles.find(roleObject => roleObject.role_name === "SUPER_ADMIN") === undefined){
+                    if (requestUser.roles.find(roleObject => roleObject.role_name === "SUPER_ADMIN") === undefined) {
                         return response.json({ data: request.body, statusCode: 400, message: "You are not authorized to create admin user!" });
                     }
                 }
@@ -103,8 +104,8 @@ exports.saveUser = async (request, response, next) => {
             gender: request.body.gender,
             roles: roles
         });
-       let savedUser = await userObj.save();
-       savedUser.password=undefined;
+        let savedUser = await userObj.save();
+        savedUser.password = undefined;
         CacheService.del(CommonConstants.KEYS.USERS_VISULN);
         return response.json({ data: userObj, statusCode: 200, message: "User Saved" });
     } catch (error) {
@@ -116,8 +117,8 @@ exports.saveUser = async (request, response, next) => {
 exports.changePassword = async (request, response, next) => {
     try {
         const requestUser = await GetUserFromToken.getUserDetailsFromToken(request);
-        const userId = request.body._id===""? requestUser._id:request.body._id ;
-        let userFromDB = await User.findOne({ _id: { $eq : userId } },{password:true});
+        const userId = request.body._id === "" ? requestUser._id : request.body._id;
+        let userFromDB = await User.findOne({ _id: { $eq: userId } }, { password: true });
         if (userFromDB) {
             if (request.body.currentPassword === null || request.body.currentPassword === undefined || request.body.currentPassword === "") {
                 if (requestUser.roles.find(role => role.role_name === "SUPER_ADMIN") === undefined) {
@@ -128,7 +129,7 @@ exports.changePassword = async (request, response, next) => {
                 if (!validpassword)
                     return response.json({ data: request.body, statusCode: 400, message: "Current Password is Invalid!" });
             }
-            await User.findByIdAndUpdate({ _id : userFromDB._id.toString()  }, { $set: { password: bcrypt.hashSync(request.body.newPassword, 10) } });
+            await User.findByIdAndUpdate({ _id: userFromDB._id.toString() }, { $set: { password: bcrypt.hashSync(request.body.newPassword, 10) } });
             return response.json({ data: {}, statusCode: 200, message: "Password Changed Successfully!" });
         } else {
             return response.json({ data: {}, statusCode: 400, message: "User Not Found!" });
@@ -139,7 +140,7 @@ exports.changePassword = async (request, response, next) => {
 }
 exports.getUserById = async (request, response, next) => {
     try {
-        let user = await User.findOne({ _id: { $eq : request.query.id } }).populate('roles');
+        let user = await User.findOne({ _id: { $eq: request.query.id } }).populate('roles');
         if (user)
             return response.json({ data: user, statusCode: 200, message: "User Saved" });
         else
@@ -171,7 +172,7 @@ exports.getAllUsers = async (request, response, next) => {
 
 exports.updateUser = async (request, response, next) => {
     try {
-        const userFromDB = await User.findOne({ _id: { $eq:request.body._id } });
+        const userFromDB = await User.findOne({ _id: { $eq: request.body._id } });
         if (userFromDB) {
             //updating user fields
             let keys = Object.keys(request.body);
@@ -182,9 +183,9 @@ exports.updateUser = async (request, response, next) => {
             if (request.body.roles !== undefined && request.body.roles.length !== 0) {
                 let rolesFromUI = request.body.roles;
                 for (let role of rolesFromUI) {
-                    let roleExisted = await Role.findOne({ role_name: { $eq : role.role_name } });
+                    let roleExisted = await Role.findOne({ role_name: { $eq: role.role_name } });
                     if (roleExisted && roleExisted.role_name === 'SUPER_ADMIN') {
-                       return response.json({ data: request.body, statusCode: 401, message: "Access Denied" });
+                        return response.json({ data: request.body, statusCode: 401, message: "Access Denied" });
                     }
                     if (roleExisted === null) {
                         let r = new Role({ role_name: role.role_name });
@@ -196,8 +197,8 @@ exports.updateUser = async (request, response, next) => {
                 }
             }
             userFromDB.roles = roles;
-            await User.findOneAndUpdate({ _id: { $eq : request.body._id } }, userFromDB);
-            const user = await User.findOne({ _id: { $eq : request.body._id } }).populate('roles');
+            await User.findOneAndUpdate({ _id: { $eq: request.body._id } }, userFromDB);
+            const user = await User.findOne({ _id: { $eq: request.body._id } }).populate('roles');
             user.password = undefined;
             CacheService.del(user._id.toString());
             CacheService.del(CommonConstants.KEYS.USERS_VISULN);
@@ -212,10 +213,10 @@ exports.updateUser = async (request, response, next) => {
 
 exports.deleteUserById = async (request, response, next) => {
     try {
-        const userFromDB = await User.findOne({ _id: { $eq :request.query.id } });
+        const userFromDB = await User.findOne({ _id: { $eq: request.query.id } });
         if (userFromDB) {
             //change status to INACTIVE
-            await User.findByIdAndUpdate({ _id: userFromDB._id.toString() } , { $set: { status: "INACTIVE" } });
+            await User.findByIdAndUpdate({ _id: userFromDB._id.toString() }, { $set: { status: "INACTIVE" } });
             CacheService.del(CommonConstants.KEYS.USERS_VISULN);
             return response.json({ data: {}, statusCode: 200, message: "Deleted Successfully" });
         } else {
@@ -278,10 +279,10 @@ exports.getUsersDataForVisualization = async (request, response, next) => {
 exports.getUsersBySearchKey = async (request, response) => {
     try {
         const key = request.query.searchKey;
-        if(key === undefined || key === '')
+        if (key === undefined || key === '')
             return response.json({ data: {}, statusCode: 400, message: "search key is required" });
         let users = await User.find({ email: { $regex: key, $options: 'i' } }).select("email _id");
-        if(users)
+        if (users)
             return response.json({ data: users, statusCode: 200, message: "OK" });
         else
             return response.json({ data: {}, statusCode: 400, message: "not found" });

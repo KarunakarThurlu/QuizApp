@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Home from "../src/HomeComponent/Home";
@@ -8,7 +8,7 @@ import Register from "../src/RegisterComponent/Register";
 import QuestionsTable from "./SubmitQuestionComponent/QuestionsTable";
 import PageNotFoud from "./Utils/Custom404Page";
 import AddQuestion from "./SubmitQuestionComponent/AddQuestion";
-import PublicRoute from "./Router/PublicRoute";
+import PubliRoute from "./Router/PublicRoute"
 import PrivateRoute from "./Router/PrivateRoute";
 import QuestionsDashBoard from './DashboardComponent/QuestionsDashBoard';
 import DashBoard from './DashboardComponent/DashBoard';
@@ -28,23 +28,25 @@ function App() {
       <UserState>
         <QuestionState>
           <TopicState>
-          <Switch>
-            <PublicRoute restricted={false} component={Login} exact path="/" />
-            <PublicRoute restricted={true} component={Login} exact path="/signin" />
-            <PublicRoute restricted={true} component={Register} exact path="/signup" />
-            <PublicRoute restricted={false} component={ForgotPassword} exact path="/forgotpassword" />
-            <PrivateRoute component={Home} exact path="/home" />
-            <PrivateRoute component={QuestionsDashBoard} exact path="/questionsdashboard" />
-            <PrivateRoute component={DashBoard} exact path="/usersdashboard" />
-            <PrivateRoute component={WriteExam} exact path="/writeexam" />
-            <PrivateRoute component={QuestionsTable} exact path="/submitquestion" />
-            <PrivateRoute component={ManageUsers} exact path="/manageusers" />
-            <PrivateRoute component={AddQuestion} exact path="/addquestion" />
-            <PrivateRoute component={TopicTable} exact path="/topic" />
-            <PrivateRoute component={ExamsTable} exact path="/examsdetails" />
-            <PrivateRoute component={StartExam} exact path="/startexam" />
-            <Route component={PageNotFoud} />
-          </Switch>
+            <Routes>
+              <Route element={<Login />} path="/" />
+              <Route element={<Login />} path="/signin" />
+              <Route element={<Register />} path="/signup" />
+              <Route element={<ForgotPassword />} path="/forgotpassword" />
+
+              <Route element={< PrivateRoute component={Home} />} path="/home" />
+              <Route element={< PrivateRoute component={QuestionsDashBoard} />} path="/questionsdashboard" />
+              <Route element={< PrivateRoute component={DashBoard} />} path="/usersdashboard" />
+              <Route element={< PrivateRoute component={WriteExam} />} path="/writeexam" />
+              <Route element={< PrivateRoute component={QuestionsTable} />} path="/submitquestion" />
+              <Route element={< PrivateRoute component={ManageUsers} />} path="/manageusers" />
+              <Route element={< PrivateRoute component={AddQuestion} />} path="/addquestion" />
+              <Route element={< PrivateRoute component={TopicTable} />} path="/topic" />
+              <Route element={< PrivateRoute component={ExamsTable} />} path="/examsdetails" />
+              <Route element={< PrivateRoute component={StartExam} />} path="/startexam" />
+
+              {/* <Route element={<PageNotFoud />} /> */}
+            </Routes>
           </TopicState>
         </QuestionState>
       </UserState>

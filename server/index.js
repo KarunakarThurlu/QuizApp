@@ -13,7 +13,6 @@ const topicRouter = require("./routers/TopicRouter");
 const questionRouter = require("./routers/QuestionRouter");
 const examsRouter = require("./routers/ExamsRouter");
 
-
 const PORT = process.env.PORT || 3001;
 const mongoDBURL = process.env.MONGODB_URL;
 const app = express();
@@ -35,8 +34,7 @@ const server = app.listen(PORT, () => {
     console.log(`server is running on : ${PORT} `);
 });
 
-
-mongoose.connect(mongoDBURL, { useNewUrlParser: true}).then((req, res) => {
+mongoose.connect(mongoDBURL, { useNewUrlParser: true }).then((req, res) => {
     console.log("Mongo DB Connected");
 }).catch(error => {
     console.log(error);
@@ -48,12 +46,12 @@ app.use(express.json());
 
 //limiting requests
 const limiter = Ratelimit({
-    windowMs: 1*60*1000, // 1 minute
+    windowMs: 1 * 60 * 1000, // 1 minute
     max: 15, // limit each IP to 100 requests per windowMs
     message: "Too many requests from this IP, please try again after an hour",
 
 })
-app.use(limiter); 
+app.use(limiter);
 
 //Routers configuration
 app.use("/user", userRouter);
