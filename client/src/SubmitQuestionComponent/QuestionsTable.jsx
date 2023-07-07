@@ -54,8 +54,12 @@ function SubmitQuestion(props) {
   const topics = Topics.topicNames;
   let tns = [];
   if (topics !== undefined && topics.length > 0 && topics !== null) {
-    const t = JSON.parse(topics);
-    t.map((t) => tns.push({ topicName: t.topicName, id: t._id }));
+    try {
+      const t = JSON.parse(topics);
+      t.map((t) => tns.push({ topicName: t.topicName, id: t._id }));
+    } catch (error) {
+      console.error("Error While Parsing TopicsNames");
+    }
   }
 
   const handleChangePage = (event, newPage) => {
