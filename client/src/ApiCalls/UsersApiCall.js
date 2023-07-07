@@ -2,9 +2,9 @@ import axios from "axios";
 import GetAuthToken from "../Utils/GetAuthToken";
 const UsersApiCalls = {
 
-    getAllUsers: async (pageNumber,pageSize) => {
+    getAllUsers: async (pageNumber, pageSize) => {
         const token = await GetAuthToken();
-        return  axios.get(`/user/getallusers?pageNumber=${pageNumber}&pageSize=${pageSize}`, {
+        return axios.get(`/user/getallusers?pageNumber=${pageNumber}&pageSize=${pageSize}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -12,7 +12,7 @@ const UsersApiCalls = {
     },
     getUserById: async (id) => {
         const token = await GetAuthToken();
-        return  axios.get(`/user/getuser?id=${id}`, {
+        return axios.get(`/user/getuser?id=${id}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -20,7 +20,7 @@ const UsersApiCalls = {
     },
     saveUser: async (data) => {
         const token = await GetAuthToken();
-        return  axios.post(`/user/saveuser`, data,{
+        return axios.post(`/user/saveuser`, data, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -28,7 +28,7 @@ const UsersApiCalls = {
     },
     updateUser: async (data) => {
         const token = await GetAuthToken();
-        return  axios.put("/user/updateuser", data, {
+        return axios.put("/user/updateuser", data, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -36,7 +36,7 @@ const UsersApiCalls = {
     },
     changePassword: async (data) => {
         const token = await GetAuthToken();
-        return  axios.put( "/user/changepassword", data, {
+        return axios.put("/user/changepassword", data, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -44,7 +44,7 @@ const UsersApiCalls = {
     },
     deleteUser: async (UserId) => {
         const token = await GetAuthToken();
-        return  axios.delete(`/user/deleteuser?id=${UserId}`, {
+        return axios.delete(`/user/deleteuser?id=${UserId}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -55,7 +55,7 @@ const UsersApiCalls = {
         var data = new FormData();
         data.append("image", file);
         console.log(data);
-        return  axios.post(`/user/uploadprofilepic`,data, {
+        return axios.post(`/user/uploadprofilepic`, data, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
@@ -63,16 +63,22 @@ const UsersApiCalls = {
     },
     getUsersDataForVisualization: async () => {
         const token = await GetAuthToken();
-        return  axios.get(`/user/getusersdataforvisualization`, {
+        return axios.get(`/user/getusersdataforvisualization`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },
         });
     },
 
+    /**
+     * Asynchronously gets users by search key using an authentication token.
+     *
+     * @param {string} searchKey - The search key to use.
+     * @return {Promise} A Promise that resolves with the response data.
+     */
     getUsersBySearchKey: async (searchKey) => {
         const token = await GetAuthToken();
-        return  axios.get(`/user/getusersbysearchkey?searchKey=${searchKey}`, {
+        return axios.get(`/user/getusersbysearchkey?searchKey=${searchKey}`, {
             headers: {
                 Authorization: `Bearer ` + token,
             },

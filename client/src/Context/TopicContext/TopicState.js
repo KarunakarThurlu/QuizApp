@@ -103,29 +103,29 @@ const TopicsState = (props) => {
     }
     const getTopicNames = async () => {
         setSpinner(true);
-        const topics =  localStorage.getItem("topicNames");
-        if(topics){
+        const topics = localStorage.getItem("topicNames");
+        if (topics) {
             setSpinner(false);
             dispatch({
                 type: TopicActions.TOPIC_NAMES,
                 payload: topics
             })
-        }else{
-        await TopicApiCall.getAllTopicsWithoutpagination()
-            .then(response => {
-                setSpinner(false);
-                localStorage.setItem("topicNames", JSON.stringify(response.data.data));
-                dispatch({
-                    type: TopicActions.TOPIC_NAMES,
-                    payload: response.data.data
+        } else {
+            await TopicApiCall.getAllTopicsWithoutpagination()
+                .then(response => {
+                    setSpinner(false);
+                    localStorage.setItem("topicNames", JSON.stringify(response.data.data));
+                    dispatch({
+                        type: TopicActions.TOPIC_NAMES,
+                        payload: response.data.data
+                    })
                 })
-            })
-            .catch(error => {
-                setSpinner(false);
-                console.log(error);
-            }).finally(() => {
-                setSpinner(false);
-            });
+                .catch(error => {
+                    setSpinner(false);
+                    console.log(error);
+                }).finally(() => {
+                    setSpinner(false);
+                });
         }
     }
 
