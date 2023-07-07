@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to Java Quiz Application!</h1>
 
-Feel free to signup [java2quiz](https://java2quiz.herokuapp.com/) here and share your java knowledge.
+Feel free to signup [java2quiz](https://java2quiz.onrender.com/) here and Share & Test your java knowledge.
 
 <h2 align="center">Following are some scrrens about project.</h2>
 
@@ -15,4 +15,3 @@ Feel free to signup [java2quiz](https://java2quiz.herokuapp.com/) here and share
 ![Screenshot from 2022-04-20 10-22-36](https://user-images.githubusercontent.com/58630029/164153523-0aec0756-928e-4b95-9ad1-edf5a51826e2.png)
 ![Screenshot from 2022-04-20 10-23-24](https://user-images.githubusercontent.com/58630029/164153528-0ce4de8c-c4ca-4118-9926-362071f480b0.png)
 ![Screenshot from 2022-04-20 10-24-32](https://user-images.githubusercontent.com/58630029/164153529-52c59856-7358-4ad3-b131-23dced17eef8.png)
-
